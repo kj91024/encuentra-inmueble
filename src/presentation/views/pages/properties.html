@@ -1,0 +1,109 @@
+{% include "../components/header.html" %}
+<main class="flex justify-center min-h-screen bg-slate-100">
+    <div class="container pl-3 pr-3 pt-8 pb-8">
+        <!--[-->
+        <div class="flex gap-8">
+            <div class="basis-3/12">
+                <form action="">
+                    <div class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <h1 class="flex text-lg font-bold gap-1 items-center h-11">
+                                <i class="bi bi-building-gear flex items-center justify-center h-11 w-11 text-2xl"></i>
+                                <span>Propiedad</span>
+                            </h1>
+                        </div>
+                        <div class="grid card-content p-4 gap-3">
+                            <label for="">
+                                <div class="text-sm mb-2">Nombre de la propiedad</div>
+                                <input type="text" class="w-full h-10 border rounded pl-2 pr-2">
+                            </label>
+                            <label for="">
+                                <div class="text-sm mb-2">Slug</div>
+                                <input type="text" class="w-full h-10 border rounded pl-2 pr-2">
+                            </label>
+                            <label for="">
+                                <div class="text-sm mb-2">Descripción</div>
+                                <textarea class="w-full h-20 border rounded p-2"></textarea>
+                            </label>
+                        </div>
+                        <div class="card-footer p-4 pt-0">
+                            <button class="w-full h-12 text-center bg-emerald-500 rounded">Agregar / Actualizar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="basis-9/12">
+                <div class="card bg-white rounded-lg border">
+                    <div class="card-header p-4 border-bottom">
+                        <div class="flex justify-between">
+                            <div class="flex items-center h-11">
+                                <h2 class="flex text-lg font-semibold gap-1">
+                                    <i class="bi bi-list-nested flex items-center justify-center w-7 h-7"></i>
+                                    <span>Listado de Propiedades</span>
+                                </h2>
+                            </div>
+                            <div>
+                                <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                    <i class="bi bi-download text-lg w-5 h-5 flex items-center justify-center"></i>
+                                    <span>Descargar</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content p-4">
+                        <table class="table-auto" width="100%">
+                            <thead class="text-sm">
+                                <tr>
+                                    <th class="w-10">ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th class="w-24"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">1</td>
+                                    <td class="text-center">
+                                        <div>Alquilar</div>
+                                        <div class="text-sm text-gray-600 italic">alquilar</div>
+                                    </td>
+                                    <td class="text-center">Ceder el uso de una propiedad (como una casa, un departamento, una oficina o un local comercial) a otra persona a cambio de un pago periódico, conocido como renta o alquiler</td>
+                                    <td class="text-center">
+                                        <div class="flex gap-2 justify-center">
+                                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                <i class="bi bi-pen text-lg w-5 h-5 flex items-center justify-center"></i>
+                                            </a>
+                                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                <i class="bi bi-trash3 text-lg w-5 h-5 flex items-center justify-center"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">1</td>
+                                    <td class="text-center">
+                                        <div>Alquilar</div>
+                                        <div class="text-sm text-gray-600 italic">alquilar</div>
+                                    </td>
+                                    <td class="text-center">Ceder el uso de una propiedad (como una casa, un departamento, una oficina o un local comercial) a otra persona a cambio de un pago periódico, conocido como renta o alquiler</td>
+                                    <td class="text-center">
+                                        <div class="flex gap-2 justify-center">
+                                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                <i class="bi bi-pen text-lg w-5 h-5 flex items-center justify-center"></i>
+                                            </a>
+                                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                <i class="bi bi-trash3 text-lg w-5 h-5 flex items-center justify-center"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--]-->
+    </div>
+</main>
+{% include "../components/footer.html" %}

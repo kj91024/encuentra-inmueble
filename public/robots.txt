@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /*BUS_CENSUS_NAME*
+Disallow: /apple-touch-icon*
+Disallow: /apple-icon*
+Disallow: /chart
+Disallow: /more-reading
+Disallow: /contact-us
+Disallow: /terms-use
+Disallow: /dmca-copyright-policy
+Disallow: /top
+Disallow: /xcv/*
+
+Sitemap: https://plyric.com/sitemap.xml

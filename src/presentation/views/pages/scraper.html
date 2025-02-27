@@ -1,0 +1,161 @@
+{% include "../components/header.html" %}
+    <main class="flex justify-center min-h-screen bg-slate-100">
+        <div class="grid gap-8 container pl-3 pr-3 pt-8 pb-8">
+            
+            <h1 class="text-center text-3xl font-bold">Urbania</h1>
+            
+            <div class="grid grid-cols-2 gap-8">
+                <div>
+                    <div class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <div class="flex justify-between">
+                                <div class="flex items-center h-11">
+                                    <h2 class="flex text-lg font-semibold gap-1">
+                                        <i class="bi bi-robot flex items-center justify-center w-7 h-7"></i>
+                                        <span>Scraper principal de portal</span>
+                                    </h2>
+                                </div>
+                                <div>
+                                    <button class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-emerald-500 pl-3 pr-3">
+                                        <i class="bi bi-save text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Guardar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 card-sub-header border-bottom p-4">
+                            <input type="text" value="https://urbania.pe/listado" class="flex-1 h-11 border rounded bg-gray-100 pl-2 pr-2" disabled>
+                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">
+                                <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
+                                <span>Probar código</span>
+                            </a>
+                        </div>
+                        <div class="card-content p-4">
+                            <div id="editor1" class="h-[30rem] rounded-lg"></div>
+                        </div>
+                        <div class="card-footer border-top p-4">
+                            <table class="table-auto" width="100%">
+                                <thead class="text-sm">
+                                    <tr>
+                                        <th class="w-10">ID</th>
+                                        <th class="text-left">Link</th>
+                                        <th class="w-40 text-center">Fecha de agregado</th>
+                                        <th class="w-16"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">1</td>
+                                        <td class="text-sm">
+                                            <a href="https://urbania.pe/lista" target="_blank">https://urbania.pe/lista</a>
+                                        </td>
+                                        <td class="text-center">12/12/2023 12:45</td>
+                                        <td class="text-center pr-0">
+                                            <div class="flex gap-2 justify-center">
+                                                <a class="flex min-w-11 h-11 justify-center gap-2 pl-2 pr-2 items-center rounded-md cursor-pointer bg-slate-100">
+                                                    <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <div class="flex justify-between">
+                                <div class="flex items-center h-11">
+                                    <h2 class="flex text-lg font-semibold gap-1">
+                                        <i class="bi bi-robot flex items-center justify-center w-7 h-7"></i>
+                                        <span>Scraper de inmuebles</span>
+                                    </h2>
+                                </div>
+                                <div>
+                                    <button class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-emerald-500 pl-3 pr-3">
+                                        <i class="bi bi-save text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Guardar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 card-sub-header border-bottom p-4">
+                            <input type="text" placeholder="https://..." class="flex-1 h-11 border rounded pl-2 pr-2">
+                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">
+                                <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
+                                <span>Probar código</span>
+                            </a>
+                        </div>
+                        <div class="card-content p-4">
+                            <div id="editor2" class="h-[30rem] rounded-lg"></div>
+                        </div>
+                        <div class="card-footer border-top p-4">
+                            <table class="table-auto" width="100%">
+                                <thead class="text-sm">
+                                    <tr>
+                                        <th class="w-10">ID</th>
+                                        <th class="text-left">Link</th>
+                                        <th class="w-40 text-center">Fecha de agregado</th>
+                                        <th class="w-16"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">1</td>
+                                        <td class="text-sm">
+                                            <a href="https://urbania.pe/inmueble/clasificado/vecltein-venta-de-terreno-en-san-juan-de-miraflores-lima-145783820" target="_blank">https://urbania.pe/inmueble/clasificado/vecltein-venta-de-terreno-en-san-juan-de-miraflores-lima-145783820</a>
+                                        </td>
+                                        <td class="text-center">12/12/2023 12:45</td>
+                                        <td class="text-center pr-0">
+                                            <div class="flex gap-2 justify-center">
+                                                <a class="flex min-w-11 h-11 justify-center gap-2 pl-2 pr-2 items-center rounded-md cursor-pointer bg-slate-100">
+                                                    <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <div class="card bg-white rounded-lg border">
+                    <div class="card-header p-4 border-bottom">
+                        <div class="flex justify-between">
+                            <div class="flex items-center h-11">
+                                <h2 class="flex text-lg font-semibold gap-1">
+                                    <i class="bi bi-fire flex items-center justify-center w-7 h-7"></i>
+                                    <span>Resultados (Output)</span>
+                                </h2>
+                            </div>
+                            <div class="flex items-center justify-center italic">Procesado en 4 segundos</div>
+                        </div>
+                    </div>
+                    <div class="card-content p-4">
+                        <div class="h-64"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script type="module">
+        import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/+esm";
+
+        monaco.editor.create(document.getElementById("editor1"), {
+            value: "// Escribe tu código aquí...",
+            language: "javascript",
+            theme: "vs-light"
+        });
+
+        monaco.editor.create(document.getElementById("editor2"), {
+            value: "// Escribe tu código aquí...",
+            language: "javascript",
+            theme: "vs-light"
+        });
+    </script>
+{% include "../components/footer.html" %}

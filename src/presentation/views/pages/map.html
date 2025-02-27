@@ -1,0 +1,151 @@
+{% include "../components/header.html" %}
+<main class="flex justify-center min-h-screen bg-slate-100">
+    <div class="container pl-3 pr-3 pt-8 pb-8">
+        <!--[-->
+        <div class="flex gap-8">
+            <div class="basis-3/12">
+                <form action="">
+                    <div class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <h1 class="flex text-lg font-bold gap-1 items-center h-11">
+                                <i class="bi bi-funnel flex items-center justify-center h-11 w-11 text-2xl"></i>
+                                <span>Filtrar inmuebles</span>
+                            </h1>
+                        </div>
+                        <div class="grid card-content p-4 gap-4">
+                            <div class="grid gap-2">
+                                <h4 class="font-semibold">Rango de precio</h4>
+                                <div class="flex gap-3">
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Divisa</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option>Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Precio mínimo</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Precio máximo</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid gap-2">
+                                <h4 class="font-semibold">Rango de área</h4>
+                                <div class="flex gap-3">
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Área mínima</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Área máxima</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid gap-2">
+                                <h4 class="font-semibold">Ubicación</h4>
+                                <div class="flex gap-3">
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Departamento</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option value="">Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Provincia</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option value="">Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="">
+                                        <div class="text-sm mb-2">Distrito</div>
+                                        <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                            <option value="">Todas</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="grid gap-2">
+                                <h4 class="font-semibold">Características</h4>
+                                <div class="flex gap-3">
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Tipo de operación</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option value="">Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Tipo de propiedad</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option value="">Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Pisos</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Baños</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Cuartos</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="basis-7/12">
+                <div id="map" class="h-full rounded-lg"></div>
+            </div>
+            <div class="basis-2/12"> asdasd </div>
+        </div>
+        <!--]-->
+    </div>
+</main>
+<script>
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([51.5, -0.09]).addTo(map)
+        .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+        .openPopup();
+</script>
+{% include "../components/footer.html" %}

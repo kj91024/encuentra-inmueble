@@ -1,0 +1,20 @@
+.border-top{
+    border-top: 1px solid #e5e7eb;
+}
+.border-bottom{
+    border-bottom: 1px solid #e5e7eb;
+}
+.border{
+    border-color: #e5e7eb;
+}
+table {
+
+}
+table thead th{
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid #ccc;
+}
+table tbody td{
+    padding: 0.5rem;
+    border-top: 1px solid #ccc;
+}

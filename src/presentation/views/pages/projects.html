@@ -1,0 +1,120 @@
+{% include "../components/header.html" %}
+<main class="flex justify-center min-h-screen bg-slate-100">
+    <div class="container pl-3 pr-3 pt-8 pb-8">
+        <!--[-->
+        <div class="flex gap-8">
+            <div class="basis-3/12">
+                <form action="">
+                    <div class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <h1 class="flex text-lg font-bold gap-1 items-center h-11">
+                                <i class="bi bi-journals flex items-center justify-center h-11 w-11 text-2xl"></i>
+                                <span>Proyecto</span>
+                            </h1>
+                        </div>
+                        <div class="grid card-content p-4 gap-3">
+                            <label for="">
+                                <div class="text-sm mb-2">Nombre del proyecto</div>
+                                <input type="text" class="w-full h-10 border rounded pl-2 pr-2">
+                            </label>
+                            <label for="">
+                                <div class="text-sm mb-2">Slug</div>
+                                <input type="text" class="w-full h-10 border rounded pl-2 pr-2">
+                            </label>
+                            <label for="">
+                                <div class="text-sm mb-2">Descripción</div>
+                                <textarea class="w-full h-20 border rounded p-2"></textarea>
+                            </label>
+                        </div>
+                        <div class="card-footer p-4 pt-0">
+                            <button class="w-full h-12 text-center bg-emerald-500 rounded">Agregar / Actualizar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="basis-9/12">
+                <div class="grid gap-8">
+                    <div class="grid grid-cols-4 gap-8">
+                        <div>
+                            <div class="card flex gap-2 p-3 bg-white border rounded-lg">
+                                <div class="flex justify-center items-center text-sky-500">
+                                    <i class="bi bi-bar-chart-fill flex h-11 w-11 text-3xl items-center justify-center"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-sm">Cantidad de proyectos</h4>
+                                    <div class="text-xl font-bold">12</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <div class="flex justify-between">
+                                <div class="flex items-center h-11">
+                                    <h2 class="flex text-lg font-semibold gap-1">
+                                        <i class="bi bi-list-nested"></i>
+                                        <span>Listado de Proyectos</span>
+                                    </h2>
+                                </div>
+                                <div>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-download text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Descargar</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content p-4">
+                            <table class="table-auto" width="100%">
+                                <thead class="text-sm">
+                                    <tr>
+                                        <th class="w-10">ID</th>
+                                        <th class="text-left">Nombre del proyecto</th>
+                                        <th class="text-left">Descripción</th>
+                                        <th class="w-40">Cantidad</th>
+                                        <th class="w-48">Última <br>vez usado </th>
+                                        <th class="w-24"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">1</td>
+                                        <td>
+                                            <div>Proyecto 1</div>
+                                            <div class="text-sm text-gray-600">
+                                                <i>proyecto-1</i>
+                                            </div>
+                                        </td>
+                                        <td class="text-left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius error, veritatis explicabo quasi similique tempora voluptatibus inventore.</td>
+                                        <td class="text-center">
+                                            <b class="italic">
+                                                <span class="text-md">182</span>
+                                                <span class="text-xs">inmuebles</span>
+                                            </b>
+                                        </td>
+                                        <td class="text-center">Hace 1 mes</td>
+                                        <td class="text-center">
+                                            <div class="flex gap-2 justify-center">
+                                                <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                    <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                                </a>
+                                                <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                    <i class="bi bi-pen text-lg w-5 h-5 flex items-center justify-center"></i>
+                                                </a>
+                                                <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                    <i class="bi bi-trash3 text-lg w-5 h-5 flex items-center justify-center"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--]-->
+    </div>
+</main>
+{% include "../components/footer.html" %}

@@ -1,0 +1,411 @@
+{% include "../components/header.html" %}
+<main class="flex justify-center min-h-screen bg-slate-100">
+    <div class="container pl-3 pr-3 pt-8 pb-8">
+        <!--[-->
+        <div class="flex gap-8">
+            <div class="basis-3/12">
+                <form action="">
+                    <div class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <h1 class="flex text-lg font-bold gap-1 items-center h-11">
+                                <i class="bi bi-funnel flex items-center justify-center h-11 w-11 text-2xl"></i>
+                                <span>Filtrar inmuebles</span>
+                            </h1>
+                        </div>
+                        <div class="grid card-content p-4 gap-4">
+                            <div class="grid gap-2">
+                                <h4 class="font-semibold">Orden</h4>
+                                <label for="">
+                                    <div class="text-sm mb-2">Ordenar de manera</div>
+                                    <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                        <option>De mayor precio a menor</option>
+                                        <option>De menor precio a mayor</option>
+                                        <option>De mas actualizado a menos actualizado</option>
+                                        <option>De menos actualizado a más actualizado</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="grid gap-2">
+                                <h4 class="font-semibold">Rango de precio</h4>
+                                <div class="flex gap-3">
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Divisa</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option>Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Precio mínimo</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Precio máximo</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid gap-2">
+                                <h4 class="font-semibold">Rango de área</h4>
+                                <div class="flex gap-3">
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Área mínima</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Área máxima</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid gap-2">
+                                <h4 class="font-semibold">Ubicación</h4>
+                                <div class="flex gap-3">
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Departamento</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option value="">Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Provincia</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option value="">Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="">
+                                        <div class="text-sm mb-2">Distrito</div>
+                                        <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                            <option value="">Todas</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="grid gap-2">
+                                <h4 class="font-semibold">Características</h4>
+                                <div class="flex gap-3">
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Tipo de operación</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option value="">Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="basis-6/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Tipo de propiedad</div>
+                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
+                                                <option value="">Todas</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Pisos</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Baños</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                    <div class="basis-4/12">
+                                        <label for="">
+                                            <div class="text-sm mb-2">Cuartos</div>
+                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer p-4 pt-0">
+                            <div class="flex justify-center items-center w-full h-12 text-center bg-sky-200 rounded">Ubicarlos en el mapa</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="basis-9/12">
+                <div class="grid gap-8">
+                    <div class="grid grid-cols-3 gap-8">
+                        <div>
+                            <div class="card flex gap-2 p-3 bg-white border rounded-lg">
+                                <div class="flex justify-center items-center text-sky-500">
+                                    <i class="bi bi-bar-chart-fill flex h-11 w-11 text-3xl items-center justify-center"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-sm">Total de inmuebles <i>(Filtrados)</i>
+                                    </h4>
+                                    <div class="text-xl font-bold">12</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="card flex gap-2 p-3 bg-white border rounded-lg">
+                                <div class="flex justify-center items-center text-emerald-600">
+                                    <i class="bi bi-clock-history flex h-11 w-11 text-3xl items-center justify-center"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-sm">Tiempo de búsqueda</h4>
+                                    <div class="text-xl font-bold">0.023 seg</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-8">
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
+                            <div>
+                                <img src="img/about-images.jpg" width="100%">
+                            </div>
+                            <div class="grid bg-white p-4 gap-3">
+                                <div>
+                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
+                                    <h2>Mz M 18 URB. San Gabriel</h2>
+                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        
+                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Inspeccionar</span>
+                                    </a>
+                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Ir al mapa</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--]-->
+    </div>
+</main>
+{% include "../components/footer.html" %}
