@@ -9,7 +9,7 @@ const createDefaultForm = (keys, defaultValue = null) => {
 const valueRef = (data) => {
     const _data = {};
     Object.entries(data.value).forEach(([key, obj]) => {
-        _data[key] = obj.value;
+        _data[key] = obj.data;
     });
     return _data;
 }

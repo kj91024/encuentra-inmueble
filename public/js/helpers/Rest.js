@@ -1,4 +1,4 @@
-const processFetch = (endpoint, data, successCallback = () => {}, errorCallback = () => {}, notoken = false) => {
+const processFetch = async (endpoint, data, successCallback = () => {}, errorCallback = () => {}, notoken = false) => {
     /*
     if(!notoken) {
         let token = atob(Cookies.get("token"));
@@ -9,20 +9,19 @@ const processFetch = (endpoint, data, successCallback = () => {}, errorCallback 
     }
     */
 
-    fetch(endpoint, data)
+    await fetch(endpoint, data)
         .then((res) => res.json())
         .catch((error) => {
             console.error("Error Fetch: " + error);
         })
         .then((response) => {
-            console.log("Success!");
-            /*if (response.status === 'success') {
+            if (response.status === 'success') {
                 successCallback(response.success.data);
             } else {
+                alert(response.error.message);
                 console.error(response.error.internalMessage);
-                console.error(response.error.message);
                 errorCallback(response.error);
-            }*/
+            }
         });
 }
 
