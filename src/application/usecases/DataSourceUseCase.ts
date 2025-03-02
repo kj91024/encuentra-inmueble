@@ -8,43 +8,39 @@ import { FastifyInstance } from "fastify";
 import { ThumbnailUseCase } from "./ThumbnailUseCase";
 
 export class DataSourceUseCase {
-    fastify: FastifyInstance;
     dataSourceRepository: DataSourceRepository;
     thumbnailUseCase: ThumbnailUseCase;
 
     constructor(fastify: FastifyInstance) {
-        this.fastify = fastify;
-        this.dataSourceRepository = new DataSourceRepositoryImp(this.fastify);
-        this.thumbnailUseCase = new ThumbnailUseCase(this.fastify);
-        
+        this.dataSourceRepository = new DataSourceRepositoryImp(fastify);
+        this.thumbnailUseCase = new ThumbnailUseCase(fastify);
     }
 
     public find = async (id: bigint) => {
-        const result = this.dataSourceRepository.find(id);
-        return result;
+        return this.dataSourceRepository.find(id);
     }
 
     public getDomain = (url: string): string => {
         try {
-            const domain = new URL(url).hostname;
-            return domain;
+            return new URL(url).hostname;
         } catch (error) {
             throw new Error(`URL inválida: ${url}`);
         }
     }
 
     public save = async (data: CreateDataSource): Promise<DataSource | void> => {
-        data.id ? await this.update(data) : await this.insert(data);
+        return data.id ? await this.update(data) : await this.insert(data);
     }
 
-    private existDomain = async (domain: string): Promise<boolean> => {
-        return this.dataSourceRepository.existDomain(domain);
+    private existDomain = async (domain: string, name: string): Promise<boolean> => {
+        return await this.dataSourceRepository.existDomain(domain, name);
     }
 
     public insert = async (data: CreateDataSource): Promise<DataSource> => {
         const domain = this.getDomain(data.url_base);
-        
-        if(await this.existDomain(domain)){
+        const url_base = `https://${domain}/`;
+
+        if(await this.existDomain(domain, data.name)){
             throw new Error('Ya existe esta fuente de datos');
         }
 
@@ -59,11 +55,10 @@ export class DataSourceUseCase {
             name: data.name,
             description: data.description,
             domain: domain,
-            url_base: data.url_base
+            url_base: url_base
         };
         
-        let id = await this.dataSourceRepository.insert(dataSource);
-        dataSource.id = id;
+        dataSource.id = await this.dataSourceRepository.insert(dataSource);
 
         return dataSource;
     }
@@ -74,6 +69,11 @@ export class DataSourceUseCase {
         }
 
         const domain = this.getDomain(data.url_base);
+        const url_base = `https://${domain}/`;
+        
+        if(await this.existDomain(domain, data.name)){
+            throw new Error('Ya existe esta fuente de datos');
+        }
 
         let dataSource = await this.dataSourceRepository.find(data.id);
         
@@ -84,7 +84,7 @@ export class DataSourceUseCase {
         dataSource.description = data.description;
         dataSource.domain = domain;
         dataSource.name = data.name;
-        dataSource.url_base = data.url_base;
+        dataSource.url_base = url_base;
 
         let createThumbnail: CreateThumbnail = {
             id: dataSource.thumbnail.id,
@@ -93,12 +93,12 @@ export class DataSourceUseCase {
 
         dataSource.thumbnail.url = createThumbnail.url;
         
-        this.thumbnailUseCase.update(createThumbnail);
-        this.dataSourceRepository.update(dataSource);
+        await this.thumbnailUseCase.update(createThumbnail);
+        await this.dataSourceRepository.update(dataSource);
     }
 
     public remove = async (id: bigint): Promise<void> => {
-        this.dataSourceRepository.delete(id);
+        await this.dataSourceRepository.delete(id);
     }
 
     public list = async (): Promise<DataSource[]> => {

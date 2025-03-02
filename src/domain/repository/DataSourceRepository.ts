@@ -1,4 +1,3 @@
-import { CreateDataSource } from "@domain/model/data_source/CreateDataSource";
 import { DataSource } from "@domain/model/data_source/DataSource";
 
 export interface DataSourceRepository {
@@ -7,5 +6,5 @@ export interface DataSourceRepository {
     find(id: bigint): Promise<DataSource | null>;
     findAll(): Promise<DataSource[]>;
     delete(id: bigint): Promise<void>;
-    existDomain(domain: string): Promise<boolean>;
+    existDomain(domain: string, name: string): Promise<boolean>;
 }

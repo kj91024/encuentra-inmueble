@@ -1,15 +1,12 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 export class EstateScraperApi {
-    fastify: FastifyInstance;
-
     constructor(fastify: FastifyInstance){
-        this.fastify = fastify;
+        fastify.get('/api/scraper/estate/find/:id',        this.find);
+        fastify.delete('/api/scraper/estate/delete/:id',   this.delete);
+        fastify.post('/api/scraper/estate/save',           this.save);
+        fastify.get('/api/scraper/estate/list',            this.list);
 
-        this.fastify.get('/api/scraper/estate/find/:id',        this.find);
-        this.fastify.delete('/api/scraper/estate/delete/:id',   this.delete);
-        this.fastify.post('/api/scraper/estate/save',           this.save);
-        this.fastify.get('/api/scraper/estate/list',            this.list);
     }
     
     private async find(request: FastifyRequest, reply: FastifyReply){

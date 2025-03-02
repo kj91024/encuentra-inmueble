@@ -10,7 +10,11 @@ export class DataSourceRepositoryImp extends Repository implements DataSourceRep
     }
 
     public insert = async (data: DataSource): Promise<bigint> => {
-        return this.dbScope(async (client) => {
+        return await this.dbScope(async (client) => {
+            if(!data.thumbnail){
+                throw new Error("No existe el thumbnail al momento de insertar la fuente de datos");
+            }
+
             const sql = `
                 INSERT INTO data_sources (id_thumbnail, name, description, domain, url_base, created_at, updated_at) 
                 VALUES ($1, $2, $3, $4, $5, $6, $7) 
@@ -33,20 +37,24 @@ export class DataSourceRepositoryImp extends Repository implements DataSourceRep
     }
 
     public update = async (data: DataSource): Promise<void> => {
-        return this.dbScope(async (client) => {
+        return await this.dbScope(async (client) => {
+            if(!data.id){
+                throw new Error("Falta el ID de la fuente de datos");
+            }
+
             const sql = `
                 UPDATE data_sources
                 SET name = $1, description = $2, domain = $3, url_base = $4, updated_at = $5
-                WHERE id_thumbnail = $6;
+                WHERE id_data_source = $6;
             `;
-        
+
             const values = [
                 data.name,
                 data.description,
                 data.domain,
                 data.url_base,
                 new Date(),
-                data.id
+                data.id.toString()
             ];
             
             await client.query(sql, values);
@@ -74,12 +82,13 @@ export class DataSourceRepositoryImp extends Repository implements DataSourceRep
     }
 
     public find = async (id: bigint): Promise<DataSource | null> => {
-        return this.dbScope(async (client) => {
+        return await this.dbScope(async (client) => {
             const sql = `
-                SELECT thumbnails.id_thumbnail, thumbnail.url, 
-                    data_sources.id_data_source, data_sources.name, data_sources.description, data_sources.url_base, data_sources.domain, data_sources.created_at, data_sources.deleted_at, 
+                SELECT thumbnails.id_thumbnail, thumbnails.url, 
+                    data_sources.id_data_source, data_sources.name, data_sources.description, data_sources.url_base,
+                    data_sources.domain, data_sources.created_at, data_sources.deleted_at 
                 FROM data_sources
-                JOIN thumbnails ON data_source.id_thumbnail = thumbnail.id_thumbnail
+                JOIN thumbnails ON data_sources.id_thumbnail = thumbnails.id_thumbnail
                 WHERE id_data_source = $1
             `;
             const res = await client.query(sql, [id.toString()]);
@@ -91,10 +100,14 @@ export class DataSourceRepositoryImp extends Repository implements DataSourceRep
     }
     
     public findAll = async (): Promise<DataSource[]> => {
-        return this.dbScope(async (client) => {
+        return await this.dbScope(async (client) => {
             const sql = `
-                SELECT *
+                SELECT thumbnails.id_thumbnail, thumbnails.url, 
+                    data_sources.id_data_source, data_sources.name, data_sources.description, data_sources.url_base,
+                    data_sources.domain, data_sources.created_at, data_sources.deleted_at 
                 FROM data_sources
+                JOIN thumbnails ON data_sources.id_thumbnail = thumbnails.id_thumbnail
+                WHERE data_sources.deleted_at IS NULL
                 ORDER BY id_data_source DESC
             `;
 
@@ -104,26 +117,27 @@ export class DataSourceRepositoryImp extends Repository implements DataSourceRep
     }
 
     public delete = async (id: bigint): Promise<void> => {
-        return this.dbScope(async (client) => {
+        return await this.dbScope(async (client) => {
             const sql = `
-                DELETE FROM data_sources
-                WHERE id_data_source = $1
+                UPDATE data_sources
+                SET deleted_at = $1
+                WHERE id_data_source = $2
             `;
-            await client.query(sql, [id.toString()]);
+            await client.query(sql, [new Date, id.toString()]);
         });
     }
 
-    public existDomain = async (domain: string): Promise<boolean> => {
-        return this.dbScope(async (client) => {
+    public existDomain = async (domain: string, name: string): Promise<boolean> => {
+        return await this.dbScope(async (client) => {
             const sql = `
                 SELECT EXISTS (
                     SELECT 1
                     FROM data_sources
-                    WHERE domain = $1
+                    WHERE (domain = $1 OR name = $2) AND deleted_at IS NULL
                 )
             `;
 
-            const res = await client.query(sql, [domain]);
+            const res = await client.query(sql, [domain, name]);
             return res.rows[0].exists; // Devuelve true o false directamente
         });
     }

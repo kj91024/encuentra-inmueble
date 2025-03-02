@@ -3,6 +3,6 @@ export interface ErrorResponse {
     error: {
         message: String;
         internal_message: String;
-        data: any;
+        data?: any;
     }
 }

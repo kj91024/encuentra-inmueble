@@ -5,16 +5,14 @@ import { ThumbnailRepositoryImp } from "@infrastructure/persistences/ThumbnailRe
 import { FastifyInstance } from "fastify";
 
 export class ThumbnailUseCase {
-    fastify: FastifyInstance;
     thumbnailRepository: ThumbnailRepository; 
 
     constructor(fastify: FastifyInstance){
-        this.fastify = fastify;
-        this.thumbnailRepository = new ThumbnailRepositoryImp(this.fastify);
+        this.thumbnailRepository = new ThumbnailRepositoryImp(fastify);
     }
 
     public save = async (data: CreateThumbnail): Promise<Thumbnail | void> => {
-        return data.id ? this.update(data) : this.insert(data);
+        return data.id ? await this.update(data) : await this.insert(data);
     }
 
     public insert = async (data: CreateThumbnail): Promise<Thumbnail> => {
@@ -34,10 +32,10 @@ export class ThumbnailUseCase {
             url: data.url
         };
 
-        this.thumbnailRepository.update(thumbnail);
+        await this.thumbnailRepository.update(thumbnail);
     }
 
     public find = async (id: bigint): Promise<Thumbnail | null> => {
-        return null;
+        return await this.thumbnailRepository.find(id);
     }
 }
