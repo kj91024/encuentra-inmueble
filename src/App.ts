@@ -6,6 +6,7 @@ import FastifyPostgres from '@fastify/postgres'
 import FastifyCors from '@fastify/cors'
 import FastifyCompress from '@fastify/compress'
 import FastifyView from '@fastify/view'
+import FastifyRateLimit from '@fastify/rate-limit'
 
 import PinoPretty from 'pino-pretty'
 import Nunjucks from 'nunjucks'
@@ -27,7 +28,6 @@ import { DataSourceApi } from '@presentation/http/api/DataSourceApi'
 import { DataSourceController } from '@presentation/http/controller/DataSourceController'
 import { SuccessResponse } from '@application/responses/SuccessResponse'
 import { ErrorResponse } from '@application/responses/ErrorResponse'
-import { DataSourceUseCase } from '@application/usecases/DataSourceUseCase'
 
 class App {
     fastify: FastifyInstance;
@@ -45,6 +45,7 @@ class App {
     
     async run(){
         this.loadStatic();
+        this.loadRateLimit();
         this.loadCompression();
         this.loadViewer();
         this.loadDecorators();
@@ -61,15 +62,38 @@ class App {
         }
     }
 
-    loadStatic() {
-        console.log(path.join(process.cwd(), "public"));
-        this.fastify.register(FastifyStatic, {
-            root: path.join(process.cwd(), "public"),
-            prefix: "/"
+    private loadRateLimit(){
+        this.fastify.register(FastifyRateLimit, {
+            max: 5, // Máximo 2 solicitudes
+            timeWindow: "1 second", // En una ventana de 1 segundo
+            ban: 1, // Opcional: bloquear IP temporalmente si excede el límite varias veces
+            continueExceeding: false,
+            keyGenerator: (req) => req.ip, // Limita por dirección IP
+            errorResponseBuilder: (req, context) => {
+                const res: ErrorResponse = {
+                    status: 'error',
+                    error: {
+                        message: `Has excedido el límite de ${context.max} solicitudes por segundo.`,
+                        internal_message: 'Too Many Requests'
+                    }
+                };
+                return res;
+            }
         });
     }
 
-    loadDecorators() {
+    private loadStatic() {
+        this.fastify.register(FastifyStatic, {
+            root: path.join(process.cwd(), "public"),
+            prefix: "/",
+            cacheControl: true,
+            maxAge: "1d",
+            immutable: true,
+            preCompressed: true
+        });
+    }
+
+    private loadDecorators() {
         this.fastify.decorateReply('success', function(message: String, data?: any) {
             let res: SuccessResponse = {
                 status: 'success',
@@ -100,12 +124,12 @@ class App {
         });
     }
 
-    loadCompression() {
+    private loadCompression() {
         // Registrar el plugin de compresión
         this.fastify.register(FastifyCompress);
     }
 
-    loadViewer() {
+    private loadViewer() {
         this.fastify.register(FastifyView, {
             engine:{
                 nunjucks: Nunjucks
@@ -114,7 +138,7 @@ class App {
         });
     }
 
-    loadErrorHandler() {
+    private loadErrorHandler() {
         this.fastify.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
             console.error(error.message);
             let message = null;
@@ -125,7 +149,7 @@ class App {
         });
     }
 
-    loadCors() {
+    private loadCors() {
         // Registrar el plugin CORS
         this.fastify.register(FastifyCors, {
             // Opciones de CORS (configura según tus necesidades)
@@ -134,7 +158,7 @@ class App {
         });
     }
 
-    loadDatabase() {
+    private loadDatabase() {
         const dbHost = process.env.DB_HOST;
         const dbPort = process.env.DB_PORT;
         const dbName = process.env.DB_NAME;
@@ -147,9 +171,7 @@ class App {
         });
     }
 
-    loadControllers(){
-        
-
+    private loadControllers(){
         const apis = [ EstateScraperApi, PortalScraperApi, DataSourceApi ];
         const controllers = [
             DashboardController,
