@@ -1,20 +1,16 @@
-import { DataSource } from "@domain/model/data_source/DataSource";
 import { DataSourceRepository } from "@domain/repository/DataSourceRepository";
 import { FastifyInstance } from "fastify";
 import { Repository } from "../Repository";
-import { Thumbnail } from "@domain/model/thumbnail/Thumbnail";
+import { DataSourceEntity } from "@domain/entity/data_source/DataSourceEntity";
+import { DataSourceRaw } from "@domain/entity/data_source/DataSourceRaw";
 
 export class DataSourceRepositoryImp extends Repository implements DataSourceRepository {
     constructor(fastify: FastifyInstance) {
         super(fastify);
     }
 
-    public insert = async (data: DataSource): Promise<bigint> => {
+    public insert = async (data: DataSourceEntity): Promise<number> => {
         return await this.dbScope(async (client) => {
-            if(!data.thumbnail){
-                throw new Error("No existe el thumbnail al momento de insertar la fuente de datos");
-            }
-
             const sql = `
                 INSERT INTO data_sources (id_thumbnail, name, description, domain, url_base, created_at, updated_at) 
                 VALUES ($1, $2, $3, $4, $5, $6, $7) 
@@ -22,23 +18,28 @@ export class DataSourceRepositoryImp extends Repository implements DataSourceRep
             `;
             
             const values = [
-                data.thumbnail.id,
+                data.id_thumbnail,
                 data.name,
                 data.description,
                 data.domain,
                 data.url_base,
-                new Date,
-                new Date
+                data.created_at ?? new Date(),
+                data.updated_at ?? new Date()
             ];
             
             const res = await client.query(sql, values);
+
+            if (!res.rows || res.rows.length === 0) {
+                throw new Error("Error al insertar la fuente de datos: No se recibió un ID.");
+            }
+
             return res.rows[0].id_data_source;
         });
     }
 
-    public update = async (data: DataSource): Promise<void> => {
+    public update = async (data: DataSourceEntity): Promise<void> => {
         return await this.dbScope(async (client) => {
-            if(!data.id){
+            if(!data.id_data_source){
                 throw new Error("Falta el ID de la fuente de datos");
             }
 
@@ -53,58 +54,41 @@ export class DataSourceRepositoryImp extends Repository implements DataSourceRep
                 data.description,
                 data.domain,
                 data.url_base,
-                new Date(),
-                data.id.toString()
+                data.updated_at ?? new Date(),
+                data.id_data_source.toString()
             ];
             
             await client.query(sql, values);
         });
     }
 
-    private mapper = (row: any): DataSource => {
-        let thumbnail: Thumbnail = {
-            id: row.id_thumbnail,
-            url: row.url
-        };
-
-        let dataSource: DataSource = {
-            id: row.id_data_source,
-            thumbnail: thumbnail,
-            name: row.name,
-            description: row.description,
-            url_base: row.url_base,
-            domain: row.domain,
-            created_at: row.created_at,
-            updated_at: row.deleted_at
-        }
-
-        return dataSource;
-    }
-
-    public find = async (id: bigint): Promise<DataSource | null> => {
+    public find = async (id: number): Promise<DataSourceRaw> => {
         return await this.dbScope(async (client) => {
             const sql = `
-                SELECT thumbnails.id_thumbnail, thumbnails.url, 
+                SELECT thumbnails.id_thumbnail, thumbnails.url as thumbnail_url, 
                     data_sources.id_data_source, data_sources.name, data_sources.description, data_sources.url_base,
-                    data_sources.domain, data_sources.created_at, data_sources.deleted_at 
+                    data_sources.domain, data_sources.created_at, data_sources.updated_at 
                 FROM data_sources
                 JOIN thumbnails ON data_sources.id_thumbnail = thumbnails.id_thumbnail
                 WHERE id_data_source = $1
             `;
-            const res = await client.query(sql, [id.toString()]);
-            const row = res.rows[0];
-            
-            const response = this.mapper(row);
-            return response;
+
+            const res = await client.query(sql, [id]);
+
+            if(!res.rows.length){
+                throw new Error("No existe esta fuente de datos");
+            }
+
+            return res.rows[0];
         });
     }
     
-    public findAll = async (): Promise<DataSource[]> => {
+    public findAll = async (): Promise<DataSourceRaw[]> => {
         return await this.dbScope(async (client) => {
             const sql = `
-                SELECT thumbnails.id_thumbnail, thumbnails.url, 
+                SELECT thumbnails.id_thumbnail, thumbnails.url as thumbnail_url, 
                     data_sources.id_data_source, data_sources.name, data_sources.description, data_sources.url_base,
-                    data_sources.domain, data_sources.created_at, data_sources.deleted_at 
+                    data_sources.domain, data_sources.created_at, data_sources.updated_at 
                 FROM data_sources
                 JOIN thumbnails ON data_sources.id_thumbnail = thumbnails.id_thumbnail
                 WHERE data_sources.deleted_at IS NULL
@@ -112,18 +96,18 @@ export class DataSourceRepositoryImp extends Repository implements DataSourceRep
             `;
 
             const res = await client.query(sql);
-            return res.rows.map(row => this.mapper(row));
+            return res.rows;
         });
     }
 
-    public delete = async (id: bigint): Promise<void> => {
+    public delete = async (id: number): Promise<void> => {
         return await this.dbScope(async (client) => {
             const sql = `
                 UPDATE data_sources
                 SET deleted_at = $1
                 WHERE id_data_source = $2
             `;
-            await client.query(sql, [new Date, id.toString()]);
+            await client.query(sql, [new Date(), id.toString()]);
         });
     }
 

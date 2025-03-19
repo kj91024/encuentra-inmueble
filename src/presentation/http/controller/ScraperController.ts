@@ -6,7 +6,7 @@ export class ScraperController {
     constructor(fastify: FastifyInstance) {
         this.fastify = fastify;
         this.fastify.get('/scrapers', this.index);
-        this.fastify.get('/scraper/:num', this.scraper);
+        this.fastify.get('/scraper/:id_data_source', this.scraper);
     }
 
     private async index(request: FastifyRequest, reply: FastifyReply){
@@ -18,8 +18,10 @@ export class ScraperController {
     }
 
     private async scraper(request: FastifyRequest, reply: FastifyReply){
+        const { id_data_source } = request.params as { id_data_source: number };
         const data = {
-            page_title: 'Scraper'
+            page_title: 'Scraper',
+            id_data_source,
         };
 
         return reply.view('pages/scraper.html', data);

@@ -7,6 +7,7 @@ import FastifyCors from '@fastify/cors'
 import FastifyCompress from '@fastify/compress'
 import FastifyView from '@fastify/view'
 import FastifyRateLimit from '@fastify/rate-limit'
+import FastifyCookie from "@fastify/cookie";
 
 import PinoPretty from 'pino-pretty'
 import Nunjucks from 'nunjucks'
@@ -28,6 +29,17 @@ import { DataSourceApi } from '@presentation/http/api/DataSourceApi'
 import { DataSourceController } from '@presentation/http/controller/DataSourceController'
 import { SuccessResponse } from '@application/responses/SuccessResponse'
 import { ErrorResponse } from '@application/responses/ErrorResponse'
+import {EstateLinkApi} from "@api/EstateLinkApi.ts";
+import {CurrencyApi} from "@api/CurrencyApi.ts";
+import {DepartamentApi} from "@api/DepartamentApi.ts";
+import {DistrictApi} from "@api/DistrictApi.ts";
+import {EstateApi} from "@api/EstateApi.ts";
+import {OperationApi} from "@api/OperationApi.ts";
+import {PropertyApi} from "@api/PropertyApi.ts";
+import {ProvinceApi} from "@api/ProvinceApi.ts";
+import {FeatureController} from "@controller/FeatureController.ts";
+import {UserApi} from "@api/UserApi.ts";
+import {PagesController} from "@controller/PagesController.ts";
 
 class App {
     fastify: FastifyInstance;
@@ -53,6 +65,7 @@ class App {
         this.loadCors();
         this.loadDatabase();
         this.loadControllers();
+        this.loadCookie();
 
         try {
             await this.fastify.listen({ port: 8080 });
@@ -171,20 +184,24 @@ class App {
         });
     }
 
+    private loadCookie() {
+        this.fastify.register(FastifyCookie/*, {
+            secret: "mi_secreto_super_seguro", // Se usa si quieres firmar cookies
+            parseOptions: {} // Opciones de cookies
+        }*/);
+    }
+
     private loadControllers(){
-        const apis = [ EstateScraperApi, PortalScraperApi, DataSourceApi ];
+        const apis = [
+            CurrencyApi, DataSourceApi, DepartamentApi, DistrictApi, EstateApi, EstateLinkApi, EstateScraperApi,
+            OperationApi, PortalScraperApi, PropertyApi, ProvinceApi, UserApi
+        ];
+
         const controllers = [
-            DashboardController,
-            DivisesController,
-            EstatesController,
-            MapController,
-            OperationsController,
-            ProjectsController,
-            PropertiesController,
-            ScraperController,
-            DataSourceController,
-            UsersController,
-            SessionController
+            DashboardController, FeatureController, EstatesController, MapController, PagesController,
+            ScraperController, DataSourceController, UsersController, SessionController
+            //AboutController
+            //DivisesController, OperationsController, ProjectsController, PropertiesController,
         ];
         
         apis.forEach(Api => new Api(this.fastify));

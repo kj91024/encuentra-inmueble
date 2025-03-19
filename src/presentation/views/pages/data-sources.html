@@ -48,22 +48,23 @@
                                         <span>Listado de fuentes de datos</span>
                                     </h2>
                                 </div>
+                                <!--
                                 <div>
                                     <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">
                                         <i class="bi bi-download text-lg w-5 h-5 flex items-center justify-center"></i>
                                         <span>Descargar</span>
                                     </a>
                                 </div>
+                                -->
                             </div>
                         </div>
                         <div class="card-content p-4">
-                            <table class="table-auto" width="100%">
+                            <table v-if="list.length" class="table-auto" width="100%">
                                 <thead class="text-sm">
                                     <tr>
                                         <th class="w-10">ID</th>
-                                        <th class="w-48">Nombre</th>
-                                        <th class="w-48">URL Base</th>
-                                        <th>Descripción</th>
+                                        <th class="w-64">Nombre</th>
+                                        <th>URL Base</th>
                                         <th class="w-40"></th>
                                     </tr>
                                 </thead>
@@ -74,7 +75,6 @@
                                             <div>{{ item.name }}</div>
                                         </td>
                                         <td class="text-center"><a :href="item.url_base" target="_blank">{{ item.url_base }}</a></div>
-                                        <td class="text-sm">{{ item.description }}</td>
                                         <td class="text-center">
                                             <div class="flex gap-2 justify-center">
                                                 <a :href="`/data-source/${item.id}`" class="flex min-w-11 h-11 justify-center gap-2 pl-2 pr-2 items-center rounded-md cursor-pointer bg-slate-100">
@@ -91,6 +91,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <p v-else class="text-center italic">Aún no hay datos</p>
                         </div>
                     </div>
                 </div>
@@ -116,7 +117,6 @@
 
                 const _list = async () => {
                     await service.list((response) => {
-                        console.log(response);
                         list.value = response;
                     });
                 }
@@ -126,11 +126,13 @@
                 const save = async (e) => {
                     e.preventDefault();
                     const data = valueRef(form);
-                    await service.save(data);
+                    form.value.id.data
+                        ? await service.update(data)
+                        : await service.insert(data);
                     await _list();
                     form.value = deepCopy(formDefault);
                 }
-                
+
                 const edit = async (id) => {
                     await service.find(id, (response) => {
                         let temp = deepCopy(formDefault);

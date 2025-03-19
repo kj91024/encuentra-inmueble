@@ -1,51 +1,68 @@
 {% include "../components/header.html" %}
-<main class="flex justify-center min-h-screen bg-slate-100">
+
+{% raw %}
+<main id="main" class="flex justify-center min-h-screen bg-slate-100">
     <div class="container pl-3 pr-3 pt-8 pb-8">
-        <!--[-->
         <div class="flex gap-8">
             <div class="basis-3/12">
                 <form action="">
                     <div class="card bg-white rounded-lg border">
-                        <div class="card-header p-4 border-bottom">
+                        <div class="flex card-header p-4 border-bottom justify-between">
                             <h1 class="flex text-lg font-bold gap-1 items-center h-11">
                                 <i class="bi bi-funnel flex items-center justify-center h-11 w-11 text-2xl"></i>
                                 <span>Filtrar inmuebles</span>
                             </h1>
+
+                            <div>
+                                <a @click="download" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
+                                    <i class="bi bi-download text-lg w-5 h-5 flex items-center justify-center"></i>
+                                </a>
+                            </div>
                         </div>
                         <div class="grid card-content p-4 gap-4">
-                            <div class="grid gap-2">
-                                <h4 class="font-semibold">Orden</h4>
-                                <label for="">
-                                    <div class="text-sm mb-2">Ordenar de manera</div>
-                                    <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                        <option>De mayor precio a menor</option>
-                                        <option>De menor precio a mayor</option>
-                                        <option>De mas actualizado a menos actualizado</option>
-                                        <option>De menos actualizado a más actualizado</option>
-                                    </select>
-                                </label>
+                            <div class="flex gap-4">
+                                <div class="grid gap-2">
+                                    <h4 class="font-semibold">Orden</h4>
+                                    <label for="order">
+                                        <div class="text-sm mb-2">Ordenar de manera</div>
+                                        <select v-model="filter.order" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="order">
+                                            <option value="1">De mayor precio a menor</option>
+                                            <option value="2">De menor precio a mayor</option>
+                                            <option value="3">De mas actualizado a menos actualizado</option>
+                                            <option value="4">De menos actualizado a más actualizado</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="grid gap-2 basis-3/12">
+                                    <h4 class="font-semibold">Paginación</h4>
+                                    <label for="order">
+                                        <div class="text-sm mb-2">Cantidad</div>
+                                        <input id="size" type="number" min="20" v-model="filter.size" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                    </label>
+                                </div>
                             </div>
                             <div class="grid gap-2">
                                 <h4 class="font-semibold">Rango de precio</h4>
                                 <div class="flex gap-3">
                                     <div class="basis-4/12">
-                                        <label for="">
+                                        <label for="currency">
                                             <div class="text-sm mb-2">Divisa</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option>Todas</option>
+                                            <select v-model="filter.currency" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="currency">
+                                                <option value="0">Todo</option>
+                                                <option v-for="currency in currencies" :value="currency.id">{{ currency.name }}</option>
                                             </select>
                                         </label>
                                     </div>
                                     <div class="basis-4/12">
-                                        <label for="">
+                                        <label for="min_price">
                                             <div class="text-sm mb-2">Precio mínimo</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            <input id="min_price" type="number" min="0" v-model="filter.min_price" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
                                         </label>
                                     </div>
                                     <div class="basis-4/12">
-                                        <label for="">
+                                        <label for="max_price">
                                             <div class="text-sm mb-2">Precio máximo</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            <input id="max_price" type="number" min="0" v-model="filter.max_price" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
                                         </label>
                                     </div>
                                 </div>
@@ -54,44 +71,45 @@
                                 <h4 class="font-semibold">Rango de área</h4>
                                 <div class="flex gap-3">
                                     <div class="basis-6/12">
-                                        <label for="">
+                                        <label for="min_area">
                                             <div class="text-sm mb-2">Área mínima</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            <input id="min_area" min="0" type="number" v-model="filter.min_area" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
                                         </label>
                                     </div>
                                     <div class="basis-6/12">
-                                        <label for="">
+                                        <label for="max_area">
                                             <div class="text-sm mb-2">Área máxima</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            <input id="max_area" min="0" type="number" v-model="filter.max_area" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="grid gap-2">
                                 <h4 class="font-semibold">Ubicación</h4>
-                                <div class="flex gap-3">
-                                    <div class="basis-6/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Departamento</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option value="">Todas</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div class="basis-6/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Provincia</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option value="">Todas</option>
-                                            </select>
-                                        </label>
-                                    </div>
+                                <div>
+                                    <label for="departament">
+                                        <div class="text-sm mb-2">Departamento</div>
+                                        <select v-model="filter.id_departament" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="departament">
+                                            <option value="0">Todas</option>
+                                            <option v-for="departament in departaments" :value="departament.id">{{ departament.name }}</option>
+                                        </select>
+                                    </label>
                                 </div>
                                 <div>
-                                    <label for="">
+                                    <label for="province">
+                                        <div class="text-sm mb-2">Provincia</div>
+                                        <select v-model="filter.id_province" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="province">
+                                            <option value="0">Todas</option>
+                                            <option v-for="province in provinces" :value="province.id">{{ province.name }}</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="district">
                                         <div class="text-sm mb-2">Distrito</div>
-                                        <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                            <option value="">Todas</option>
+                                        <select v-model="filter.id_district" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="district">
+                                            <option value="0">Todas</option>
+                                            <option v-for="district in districts" :value="district.id">{{ district.name }}</option>
                                         </select>
                                     </label>
                                 </div>
@@ -100,52 +118,79 @@
                                 <h4 class="font-semibold">Características</h4>
                                 <div class="flex gap-3">
                                     <div class="basis-6/12">
-                                        <label for="">
+                                        <label for="operation">
                                             <div class="text-sm mb-2">Tipo de operación</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option value="">Todas</option>
+                                            <select v-model="filter.id_operation" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="operation">
+                                                <option value="0">Todas</option>
+                                                <option v-for="operation in operations" :value="operation.id">{{ operation.name }}</option>
                                             </select>
                                         </label>
                                     </div>
                                     <div class="basis-6/12">
-                                        <label for="">
+                                        <label for="property">
                                             <div class="text-sm mb-2">Tipo de propiedad</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option value="">Todas</option>
+                                            <select v-model="filter.id_property" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="property">
+                                                <option value="0">Todas</option>
+                                                <option v-for="property in properties" :value="property.id">{{ property.name }}</option>
                                             </select>
                                         </label>
                                     </div>
                                 </div>
-                                <div class="flex gap-3">
-                                    <div class="basis-4/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Pisos</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
-                                        </label>
+                                <div class="grid gap-3">
+                                    <div class="flex gap-3">
+                                        <div class="basis-6/12">
+                                            <label for="floor_1">
+                                                <div class="text-sm mb-2">Pisos minimos</div>
+                                                <input id="floor_1" v-model="filter.min_floors" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
+                                        <div class="basis-6/12">
+                                            <label for="floor_2">
+                                                <div class="text-sm mb-2">Pisos máximos</div>
+                                                <input id="floor_2" v-model="filter.max_floors" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="basis-4/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Baños</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
-                                        </label>
+                                    <div class="flex gap-3">
+                                        <div class="basis-6/12">
+                                            <label for="bathroom_1">
+                                                <div class="text-sm mb-2">Baños minimos</div>
+                                                <input id="bathroom_1" v-model="filter.min_bathrooms" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
+                                        <div class="basis-6/12">
+                                            <label for="bathroom_2">
+                                                <div class="text-sm mb-2">Baños máximos</div>
+                                                <input id="bathroom_2" v-model="filter.max_bathrooms" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="basis-4/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Cuartos</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
-                                        </label>
+                                    <div class="flex gap-3">
+                                        <div class="basis-6/12">
+                                            <label for="room_1">
+                                                <div class="text-sm mb-2">Cuartos mínimos</div>
+                                                <input id="room_1" v-model="filter.min_rooms" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
+                                        <div class="basis-6/12">
+                                            <label for="room_2">
+                                                <div class="text-sm mb-2">Cuartos máximos</div>
+                                                <input id="room_2" v-model="filter.max_rooms" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer p-4 pt-0">
-                            <div class="flex justify-center items-center w-full h-12 text-center bg-sky-200 rounded">Ubicarlos en el mapa</div>
+                            <div class="flex justify-center items-center w-full h-12 text-center bg-sky-200 rounded cursor-pointer" @click="listEstates">Realizar búsqueda</div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="basis-9/12">
                 <div class="grid gap-8">
+                    <!--
                     <div class="grid grid-cols-3 gap-8">
                         <div>
                             <div class="card flex gap-2 p-3 bg-white border rounded-lg">
@@ -153,8 +198,7 @@
                                     <i class="bi bi-bar-chart-fill flex h-11 w-11 text-3xl items-center justify-center"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <h4 class="text-sm">Total de inmuebles <i>(Filtrados)</i>
-                                    </h4>
+                                    <h4 class="text-sm">Total de inmuebles <i>(Filtrados)</i></h4>
                                     <div class="text-xl font-bold">12</div>
                                 </div>
                             </div>
@@ -171,241 +215,150 @@
                             </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-8">
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
+                    -->
+                    <div class="grid grid-cols-4 gap-8">
+
+                        <a v-for="estate in estates" :href="`/estate/${estate.id}`" class="grid basis-3/12 border bg-white rounded-lg overflow-hidden">
+                            <div class="relative">
+                                <div :href="estate.data_source.url_base" class="flex absolute p-1 rounded bg-white gap-2 top-3 left-3 items-center">
+                                    <div><img :src="estate.data_source.thumbnail.url" class="rounded"></div>
+                                    <div>{{ estate.data_source.name }}</div>
+                                </div>
+
+                                <img :src="estate.thumbnails[0].url" width="100%">
                             </div>
                             <div class="grid bg-white p-4 gap-3">
                                 <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
+                                    <div>{{ estate.info.property.name }}</div>
+                                    <h1 class="text-xl font-semibold mt-1 mb-1">{{ estate.info.currency.symbol }} {{ estate.info.price.toLocaleString('en-US') }} {{ estate.info.currency.iso }}</h1>
+                                    <div>{{ estate.info.operation.name }}</div>
+                                    <p class="text-sm pt-1 pb-1 itallic"><i>{{ estate.gps.address }}</i></p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
-                            </div>
-                            <div class="grid bg-white p-4 gap-3">
-                                <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
-                            </div>
-                            <div class="grid bg-white p-4 gap-3">
-                                <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
-                            </div>
-                            <div class="grid bg-white p-4 gap-3">
-                                <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
-                            </div>
-                            <div class="grid bg-white p-4 gap-3">
-                                <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
-                            </div>
-                            <div class="grid bg-white p-4 gap-3">
-                                <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
-                            </div>
-                            <div class="grid bg-white p-4 gap-3">
-                                <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
-                            </div>
-                            <div class="grid bg-white p-4 gap-3">
-                                <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
-                            </div>
-                            <div class="grid bg-white p-4 gap-3">
-                                <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid basis-3/12 border rounded-lg overflow-hidden">
-                            <div>
-                                <img src="img/about-images.jpg" width="100%">
-                            </div>
-                            <div class="grid bg-white p-4 gap-3">
-                                <div>
-                                    <h1 class="text-xl font-semibold">$124,100.00 USD</h1>
-                                    <h2>Mz M 18 URB. San Gabriel</h2>
-                                    <p class="text-sm">San Juan de Lurigancho, Lima</p>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        
-                                        <i class="bi bi-eye text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Inspeccionar</span>
-                                    </a>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-sky-200 pl-3 pr-3 gap-2">
-                                        <i class="bi bi-pin-map text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Ir al mapa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        </a>
+
                     </div>
                 </div>
             </div>
         </div>
-        <!--]-->
     </div>
 </main>
+<script type="module">
+    import { prettyDate } from "/js/helpers/Time.js";
+    import { exportData } from "/js/helpers/Excel.js";
+    import {
+        CurrencyService, DepartamentService, ProvinceService,
+        DistrictService, OperationService, PropertyService,
+        EstateService
+    } from "/js/services/Masters.js";
+
+    const { createApp, ref, onBeforeMount, onMounted, watch } = Vue
+
+    createApp({
+        setup() {
+            const currencyService = CurrencyService();
+            const departamentService = DepartamentService();
+            const provinceService = ProvinceService();
+            const districtService = DistrictService();
+            const operationService = OperationService();
+            const propertyService = PropertyService();
+            const estateService = EstateService();
+
+            const filter = ref({
+                order: 1, page: 0, size: 20,
+                id_departament: undefined, id_province: undefined, id_district: undefined, id_currency: undefined,
+                min_price: undefined, max_price: undefined, id_operation: undefined, id_property: undefined,
+                min_floors: undefined, max_floors: undefined, min_bathrooms: undefined, max_bathrooms: undefined,
+                min_area: undefined, max_area: undefined, min_rooms: undefined, max_rooms: undefined,
+            });
+
+            watch(() => filter.value.id_departament, async () => await listProvinces(), { deep: true });
+            watch(() => filter.value.id_province,    async () => await listDistricts(), { deep: true });
+
+            const currencies = ref([]);
+            const departaments = ref([]);
+            const provinces = ref([]);
+            const districts = ref([]);
+            const operations = ref([]);
+            const properties = ref([]);
+            const estates = ref([]);
+
+            const listCurrencies = async () => {
+                await currencyService.list((response) => currencies.value = response)
+            }
+
+            const listDepartaments = async () => {
+                await departamentService.list((response) => departaments.value = response)
+            }
+
+            const listProvinces = async () => {
+                await provinceService.list(filter.value.id_departament, (response) => provinces.value = response)
+            }
+            const listDistricts = async () => {
+                await districtService.list(filter.value.id_departament, filter.value.id_province, (response) => districts.value = response)
+            }
+
+            const listOperations = async () => {
+                await operationService.list((response) => operations.value = response)
+            }
+            const listProperties = async () => {
+                await propertyService.list((response) => properties.value = response)
+            }
+
+            const listEstates = async () => {
+                await estateService.list(filter.value, (response) => estates.value = response)
+            }
+
+            onBeforeMount(async () => {
+                await Promise.all([listCurrencies(), listDepartaments(), listOperations(), listProperties()]);
+                await listEstates();
+            });
+
+            const download = async () => {
+                console.log(estates.value);
+
+                const data = estates.value.map(estate => {
+                    let row = {};
+                    row.id_inmueble = estate.id;
+
+                    row.propiedad = estate.info.property.name;
+                    row.operacion = estate.info.operation.name;
+                    row.precio = `${estate.info.currency.symbol} ${estate.info.price.toLocaleString('en-US')} ${estate.info.currency.iso}`;
+                    row.descripcion = estate.info.description;
+                    row.area = estate.info.area;
+                    row.banos = estate.info.bathrooms;
+                    row.pisos = estate.info.floors;
+                    row.cuartos = estate.info.rooms;
+
+                    row.latitud = estate.gps.lat;
+                    row.longitud = estate.gps.lng;
+                    row.direccion_exacta = estate.gps.address;
+
+                    row.departamento = estate.departament.name;
+                    row.provincia = estate.province.name;
+                    row.distrito = estate.district.name;
+
+                    row.propietario_nombre = estate.owner.name;
+                    row.propietario_celular = estate.owner.cellphone;
+
+                    row.fuente_original = estate.url_source;
+                    row.ultimo_cambio_en = prettyDate(estate.extracted_at);
+                    row.creado_en = prettyDate(estate.created_at);
+
+                    return row;
+                });
+
+                await exportData("Inmuebles", data);
+            }
+
+            return {
+                filter,
+                currencies, departaments, provinces, districts, operations, properties, estates,
+                listEstates, download
+            }
+        }
+    }).mount('#main')
+</script>
+{% endraw %}
+
 {% include "../components/footer.html" %}

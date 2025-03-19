@@ -18,3 +18,7 @@ table tbody td{
     padding: 0.5rem;
     border-top: 1px solid #ccc;
 }
+
+#editor1, #editor2, #editor-response, #editor-console{
+    font-size: 14px !important;
+}

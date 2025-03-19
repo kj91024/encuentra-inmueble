@@ -1,161 +1,450 @@
 {% include "../components/header.html" %}
-    <main class="flex justify-center min-h-screen bg-slate-100">
+    <script>
+        const id_data_source = {{ id_data_source }};
+    </script>
+    {% raw %}
+    <main id="main" class="flex justify-center min-h-[663px] bg-slate-100">
         <div class="grid gap-8 container pl-3 pr-3 pt-8 pb-8">
             
-            <h1 class="text-center text-3xl font-bold">Urbania</h1>
-            
-            <div class="grid grid-cols-2 gap-8">
-                <div>
-                    <div class="card bg-white rounded-lg border">
-                        <div class="card-header p-4 border-bottom">
-                            <div class="flex justify-between">
-                                <div class="flex items-center h-11">
-                                    <h2 class="flex text-lg font-semibold gap-1">
-                                        <i class="bi bi-robot flex items-center justify-center w-7 h-7"></i>
-                                        <span>Scraper principal de portal</span>
-                                    </h2>
-                                </div>
-                                <div>
-                                    <button class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-emerald-500 pl-3 pr-3">
-                                        <i class="bi bi-save text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Guardar</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 card-sub-header border-bottom p-4">
-                            <input type="text" value="https://urbania.pe/listado" class="flex-1 h-11 border rounded bg-gray-100 pl-2 pr-2" disabled>
-                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">
-                                <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
-                                <span>Probar código</span>
-                            </a>
-                        </div>
-                        <div class="card-content p-4">
-                            <div id="editor1" class="h-[30rem] rounded-lg"></div>
-                        </div>
-                        <div class="card-footer border-top p-4">
-                            <table class="table-auto" width="100%">
-                                <thead class="text-sm">
-                                    <tr>
-                                        <th class="w-10">ID</th>
-                                        <th class="text-left">Link</th>
-                                        <th class="w-40 text-center">Fecha de agregado</th>
-                                        <th class="w-16"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-sm">
-                                            <a href="https://urbania.pe/lista" target="_blank">https://urbania.pe/lista</a>
-                                        </td>
-                                        <td class="text-center">12/12/2023 12:45</td>
-                                        <td class="text-center pr-0">
-                                            <div class="flex gap-2 justify-center">
-                                                <a class="flex min-w-11 h-11 justify-center gap-2 pl-2 pr-2 items-center rounded-md cursor-pointer bg-slate-100">
-                                                    <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="card bg-white rounded-lg border">
-                        <div class="card-header p-4 border-bottom">
-                            <div class="flex justify-between">
-                                <div class="flex items-center h-11">
-                                    <h2 class="flex text-lg font-semibold gap-1">
-                                        <i class="bi bi-robot flex items-center justify-center w-7 h-7"></i>
-                                        <span>Scraper de inmuebles</span>
-                                    </h2>
-                                </div>
-                                <div>
-                                    <button class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-emerald-500 pl-3 pr-3">
-                                        <i class="bi bi-save text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Guardar</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 card-sub-header border-bottom p-4">
-                            <input type="text" placeholder="https://..." class="flex-1 h-11 border rounded pl-2 pr-2">
-                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">
-                                <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
-                                <span>Probar código</span>
-                            </a>
-                        </div>
-                        <div class="card-content p-4">
-                            <div id="editor2" class="h-[30rem] rounded-lg"></div>
-                        </div>
-                        <div class="card-footer border-top p-4">
-                            <table class="table-auto" width="100%">
-                                <thead class="text-sm">
-                                    <tr>
-                                        <th class="w-10">ID</th>
-                                        <th class="text-left">Link</th>
-                                        <th class="w-40 text-center">Fecha de agregado</th>
-                                        <th class="w-16"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-sm">
-                                            <a href="https://urbania.pe/inmueble/clasificado/vecltein-venta-de-terreno-en-san-juan-de-miraflores-lima-145783820" target="_blank">https://urbania.pe/inmueble/clasificado/vecltein-venta-de-terreno-en-san-juan-de-miraflores-lima-145783820</a>
-                                        </td>
-                                        <td class="text-center">12/12/2023 12:45</td>
-                                        <td class="text-center pr-0">
-                                            <div class="flex gap-2 justify-center">
-                                                <a class="flex min-w-11 h-11 justify-center gap-2 pl-2 pr-2 items-center rounded-md cursor-pointer bg-slate-100">
-                                                    <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+            <h1 class="text-center text-3xl font-bold">Scraper de {{ dataSource.name }}</h1>
+
             <div>
-                <div class="card bg-white rounded-lg border">
-                    <div class="card-header p-4 border-bottom">
-                        <div class="flex justify-between">
-                            <div class="flex items-center h-11">
-                                <h2 class="flex text-lg font-semibold gap-1">
-                                    <i class="bi bi-fire flex items-center justify-center w-7 h-7"></i>
-                                    <span>Resultados (Output)</span>
-                                </h2>
-                            </div>
-                            <div class="flex items-center justify-center italic">Procesado en 4 segundos</div>
-                        </div>
+                <div class="text-center pb-3">Escoge el tipo de escraper</div>
+                <div class="flex justify-center gap-4 w-full">
+                    <div @click="chooseScraper('portals')" :class="['flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 pl-3 pr-3', scraper === 'portals' ? 'bg-emerald-100' : 'bg-white border']">
+                        <i class="bi bi-globe text-lg w-5 h-5 flex items-center justify-center"></i>
+                        <span>Portales</span>
                     </div>
-                    <div class="card-content p-4">
-                        <div class="h-64"></div>
+                    <div @click="chooseScraper('estates')" :class="['flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 pl-3 pr-3', scraper === 'estates' ? 'bg-emerald-100' : 'bg-white border']">
+                        <i class="bi bi-buildings text-lg w-5 h-5 flex items-center justify-center"></i>
+                        <span>Inmuebles</span>
                     </div>
                 </div>
             </div>
+
+            <div v-show="scraper" class="grid grid-cols-2 gap-8">
+                <div class="grid gap-8">
+                    <div v-show="scraper === 'portals'" class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <div class="flex justify-between">
+                                <div class="flex items-center h-11">
+                                    <h2 class="flex text-lg font-semibold gap-1">
+                                        <i class="bi bi-robot flex items-center justify-center w-7 h-7"></i>
+                                        <span>Scraper del Portal</span>
+                                    </h2>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button @click="processPortalScraper" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-emerald-500 pl-3 pr-3">
+                                        <i class="bi bi-cpu text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Procesar</span>
+                                    </button>
+
+                                    <button @click="savePortalScraper" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 border pl-3 pr-3">
+                                        <i class="bi bi-save text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Guardar y probar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 card-sub-header border-bottom p-4">
+                            <input type="text" :value="`${linkPortalSelected}`" class="flex-1 h-11 border rounded bg-gray-100 pl-2 pr-2" disabled>
+                            <a @click="testPortalScraper" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">
+                                <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
+                                <span>Testear</span>
+                            </a>
+                        </div>
+                        <div class="card-content p-4">
+                            <div id="editor1" class="h-[45rem] rounded-lg"></div>
+                        </div>
+                        <div class="card-footer border-top p-4">
+                            <table class="table-auto" width="100%">
+                                <thead class="text-sm">
+                                    <tr>
+                                        <th class="w-10">ID</th>
+                                        <th class="text-left">Link</th>
+                                        <th class="w-40 text-center">Fecha de agregado</th>
+                                        <th class="w-16"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(portal,index) in portals">
+                                        <td class="text-center">{{ portal.id }}</td>
+                                        <td>
+                                            <div><i>{{ portal.name }}</i></div>
+                                            <a class="text-sm" :href="`${ dataSource.url_base }${ portal.url_path }`" target="_blank">{{ dataSource.url_base }}{{ portal.url_path }}</a>
+                                        </td>
+                                        <td class="text-center">{{ prettyDate(portal.updated_at) }}</td>
+                                        <td class="text-center pr-0">
+                                            <div class="flex gap-2 justify-center">
+                                                <a @click="chooseLink('portals', index)" class="flex min-w-11 h-11 justify-center gap-2 pl-2 pr-2 items-center rounded-md cursor-pointer bg-slate-100">
+                                                    <i class="bi bi-crosshair text-lg w-5 h-5 flex items-center justify-center"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div v-show="scraper === 'estates'" class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <div class="flex justify-between">
+                                <div class="flex items-center h-11">
+                                    <h2 class="flex text-lg font-semibold gap-1">
+                                        <i class="bi bi-robot flex items-center justify-center w-7 h-7"></i>
+                                        <span>Scraper de Inmuebles</span>
+                                    </h2>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button @click="processEstateScraper" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-emerald-500 pl-3 pr-3">
+                                        <i class="bi bi-cpu text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Procesar</span>
+                                    </button>
+
+                                    <button @click="saveEstateScraper" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 border pl-3 pr-3">
+                                        <i class="bi bi-save text-lg w-5 h-5 flex items-center justify-center"></i>
+                                        <span>Guardar y probar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 card-sub-header border-bottom p-4">
+                            <input type="text" :placeholder="dataSource.url" v-model="linkEstateSelected" class="flex-1 h-11 border rounded pl-2 pr-2">
+                            <a @click="testEstateScraper" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">
+                                <i class="bi bi-check2-all text-lg w-5 h-5 flex items-center justify-center"></i>
+                                <span>Testear</span>
+                            </a>
+                        </div>
+                        <div class="card-content p-4">
+                            <div id="editor2" class="h-[45rem] rounded-lg"></div>
+                        </div>
+                        <div class="card-footer border-top p-4">
+                            <table class="table-auto" width="100%">
+                                <thead class="text-sm">
+                                <tr>
+                                    <th class="w-10">ID</th>
+                                    <th class="text-left">Link</th>
+                                    <th class="w-40 text-center">Fecha de agregado</th>
+                                    <th class="w-16"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(estate, index) in estates">
+                                        <td class="text-center">{{ estate.id }}</td>
+                                        <td class="text-sm">
+                                            <a :href="`${dataSource.url_base}${estate.url_path}`" target="_blank">{{ dataSource.url_base }}{{ estate.url_path }}</a>
+                                        </td>
+                                        <td class="text-center">{{ prettyDate(estate.added_at) }}</td>
+                                        <td class="text-center pr-0">
+                                            <div class="flex gap-2 justify-center">
+                                                <a @click="chooseLink('estates', index)" class="flex min-w-11 h-11 justify-center gap-2 pl-2 pr-2 items-center rounded-md cursor-pointer bg-slate-100">
+                                                    <i class="bi bi-crosshair text-lg w-5 h-5 flex items-center justify-center"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card bg-white rounded-lg border">
+                        <div class="card-header p-4 border-bottom">
+                            <div class="flex justify-between">
+                                <div class="flex items-center h-11">
+                                    <h2 class="flex text-lg font-semibold gap-1">
+                                        <i class="bi bi-fire flex items-center justify-center w-7 h-7"></i>
+                                        <span>Resultados de prueba de {{ testResult.is_portal ? 'Portal' : 'Inmueble' }}</span>
+                                    </h2>
+                                </div>
+                                <div v-if="testResult.processing" class="flex items-center justify-center italic">Procesando...</div>
+                                <div v-if="!testResult.processing" class="flex items-center justify-center italic">Procesado en {{ (testResult.process_time/1000).toFixed(4) }} seg</div>
+                            </div>
+                        </div>
+
+                        <div class="card-content p-4">
+                            <div class="grid gap-4">
+                                <div class="grid gap-4 border p-4 rounded-lg">
+                                    <h3 class="text-center font-semibold">Respuesta de main</h3>
+                                    <div id="editor-response" class="h-[31rem]"></div>
+                                </div>
+                                <div class="grid gap-4 border p-4 rounded-lg">
+                                    <h3 class="text-center font-semibold">Consola</h3>
+                                    <div id="editor-console" class="h-[18rem]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
+
     <script type="module">
-        import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/+esm";
+        import { getFormattedDate, prettyDate } from "/js/helpers/Time.js";
+        import { DataSourceService, EstateLinkService, PortalScraperService, EstateScraperService} from "/js/services/Scrapers.js";
 
-        monaco.editor.create(document.getElementById("editor1"), {
-            value: "// Escribe tu código aquí...",
-            language: "javascript",
-            theme: "vs-light"
-        });
+        const { createApp, ref, onBeforeMount, onMounted } = Vue
 
-        monaco.editor.create(document.getElementById("editor2"), {
-            value: "// Escribe tu código aquí...",
-            language: "javascript",
-            theme: "vs-light"
-        });
+        createApp({
+            setup() {
+                const dataSourceService = DataSourceService();
+                const portalScraperService = PortalScraperService();
+                const estateLinkService = EstateLinkService();
+                const estateScraperService = EstateScraperService();
+
+                const portalScraper = ref({});
+                const estateScraper = ref({});
+                const linkPortalSelected = ref();
+                const linkEstateSelected = ref();
+                const scraper = ref();
+
+                let editor1, editor2, editorResponse, editorConsole;
+
+                const dataSource = ref({});
+                const portals = ref([]);
+                const estates = ref([]);
+                const testResult = ref({
+                    processing: false,
+                    output: '',
+                    process_time: null,
+                    is_portal: null,
+                });
+
+                const listPortals = async () => {
+                    await portalScraperService.list(id_data_source, response => portals.value = response );
+                }
+
+                const listEstateLinks = async () => {
+                    await estateLinkService.list({
+                        id_data_source,
+                        page: 0,
+                        size: 5
+                    }, (response) => {
+                        estates.value = response;
+                        linkEstateSelected.value = `${ dataSource.value.url_base }${ response[0]?.url_path }`;
+                    });
+                }
+
+                const findDataSource = async () => {
+                    await dataSourceService.find(id_data_source, response => dataSource.value = response );
+                }
+
+                const findPortalScraper = async ( index ) => {
+                    if( portals.value.length ){
+                        linkPortalSelected.value = `${ dataSource.value.url_base }${ portals.value[index]?.url_path }`;
+                        let id_portal_scraper = portals.value[index]?.id;
+                        await portalScraperService.find(id_portal_scraper, (response) => {
+                            portalScraper.value = response;
+                        });
+                    }
+                }
+
+                const findEstateScraper = async () => {
+                    if( estates.value.length ){
+                        await estateScraperService.find(id_data_source, (response) => {
+                            estateScraper.value = response === null ? { file: null } : response;
+                        });
+                    }
+                }
+
+                const resultTest = (res) => {
+                    if(res.response){
+                        editorResponse.safeSetValue(JSON.stringify(res.response, null, 4));
+                    }
+
+                    testResult.value.processing = false;
+                    testResult.value.process_time = res.process_time;
+                    testResult.value.is_portal = false;
+
+                    if(res.output) {
+                        testResult.value.output = `${getFormattedDate()} ${res.output}\n\n${testResult.value.output}`;
+                        editorConsole.safeSetValue(testResult.value.output);
+                    }
+                }
+
+                const testPortalScraper = async () => {
+                    testResult.value.processing = true;
+
+                    const data = {
+                        id_data_source: dataSource.value.id,
+                        id_portal_scraper: portalScraper.value.id,
+                        link: linkPortalSelected.value
+                    };
+
+                    await portalScraperService.test(data, response => resultTest(response));
+                }
+
+                const savePortalScraper = async () => {
+                    const data = {
+                        id_portal_scraper: portalScraper.value.id,
+                        file: editor1.getValue()
+                    }
+                    await portalScraperService.saveScraper(data, (response) => {
+                        testPortalScraper();
+                    });
+                }
+
+                const testEstateScraper = async () => {
+                    testResult.value.processing = true;
+
+                    const data = {
+                        id_data_source: dataSource.value.id,
+                        link: linkEstateSelected.value
+                    };
+
+                    await estateScraperService.test(data, response => resultTest(response));
+                }
+
+                const saveEstateScraper = async () => {
+                    const data = {
+                        id_data_source: dataSource.value.id,
+                        file: editor2.getValue()
+                    };
+
+                    await estateScraperService.saveScraper(data, (response) => {
+                        testEstateScraper();
+                    });
+                }
+
+                const processPortalScraper = async () => {
+                    testResult.value.processing = true;
+                    await portalScraperService.process({
+                        id_data_source: dataSource.value.id,
+                        id_portal_scraper: portalScraper.value.id
+                    }, (res) => {
+                        console.log(res);
+                    });
+                }
+
+                const processEstateScraper = async () => {
+                    testResult.value.processing = true;
+                    await estateScraperService.process(dataSource.value.id, (res) => {
+                        console.log(res);
+                    });
+                }
+
+                onBeforeMount(async () => {
+                    await findDataSource();
+                    await listPortals();
+                    await listEstateLinks();
+
+                    await findPortalScraper(0);
+                    await findEstateScraper();
+                });
+
+                const setEditor = (className, editable = true) => {
+                    var editor = ace.edit(className);
+                    editor.session.setMode("ace/mode/javascript");
+                    editor.setReadOnly(!editable);
+
+                    editor.safeSetValue = (value) => {
+                        editor.setReadOnly(false);  // Habilitar temporalmente
+                        editor.setValue(value, -1); // -1 evita mover el cursor
+                        editor.setReadOnly(true); // Restaurar estado original
+                    };
+
+                    return editor;
+                }
+
+                onMounted(async () => {
+                    let defaultFunctions = (`
+                         * Estas funciones ya están implementadas solo úsalos
+                         * const compress = (text: string): string
+                         * const fetchAll = async (endpoints: string[]): string[]
+                         * const unique = (array: string[]): string[]
+                         * const separate = (texto: string, inicio: string, fin: string): string
+                         * const getAddressAndUbigeoCode = async (lat: float, lon: float): { address: string, ubigeo: string }
+                         */
+
+                        const main = (data_html) => {
+                            // Escribe aqui el codigo del scraper...
+
+                        `).replaceAll("                        ", "");
+
+                    let portalStart = (`/**
+                         * SCRAPER DEL PORTAL`).replaceAll("                        ", "");
+                    let portalFinish = (`
+                            // Retornar todos los links de inmuebles
+                            return links;
+                        };`).replaceAll("                        ", "");
+
+                    let estateStart = (`/**
+                         * SCRAPER DEL INMUEBLE`).replaceAll("                        ", "");
+                    let estateFinish = (`
+                            // Retornar los datos del inmueble
+                            return {
+                                id_departament, // number
+                                id_province, // number
+                                id_district, // number
+                                id_data_source, // number
+                                id_estate_link, // BigInt
+                                title, // string
+                                url_source, // string
+                                address , // string
+
+                                latitude, // number,
+                                longitude, // number
+                                gps_address, // string
+
+                                thumbnail_url, //string
+                                gallery, //string[] lleno de links de las fotos del inmueble
+
+                                id_operation, // number -> 1 es alquilar, 2 es venta, 3 es traspaso
+                                id_property, // number -> 1 es departamento, 2 es casa, 3 es terreno o lote, 4 es oficina, 5 es local
+                                id_currency, // number
+                                description, // string
+                                floors, // number
+                                bathrooms, // number
+                                rooms, // number
+                                price, // number
+                                area, // number
+
+                                owner_name, // string
+                                owner_cellphone, // string
+                                owner_url_source, // string
+                                owner_url_thumbnail, // string
+                            };
+                        };`).replaceAll("                        ", "");
+
+                    editor1 = setEditor('editor1');
+                    editor2 = setEditor('editor2');
+                    editorResponse = setEditor('editor-response', false);
+                    editorResponse.session.setMode("ace/mode/json");
+                    editorConsole = setEditor('editor-console', false);
+
+                    setTimeout(() => {
+                        editor1.setValue(portalScraper.value.file ?? portalStart + defaultFunctions + portalFinish, -1);
+                        editor2.setValue(estateScraper.value.file ?? estateStart + defaultFunctions + estateFinish, -1);
+                    }, 1000);
+                });
+
+                const chooseScraper = (type) => {
+                    chooseLink(type, 0);
+                    scraper.value = type;
+                }
+
+                const chooseLink = (type, index) => {
+                    switch(type){
+                        case 'portals':
+                            findPortalScraper(index);
+                            break;
+                        case 'estates':
+                            linkEstateSelected.value = `${ dataSource.value.url_base }${ estates.value[index]?.url_path }`;
+                            break;
+                    }
+                }
+
+                return {
+                    dataSource, portals, estates, portalScraper, linkPortalSelected,
+                    linkEstateSelected, testResult, scraper,
+                    testPortalScraper, testEstateScraper, savePortalScraper, saveEstateScraper,
+                    chooseScraper, processPortalScraper, processEstateScraper, chooseLink, prettyDate
+                }
+            }
+        }).mount('#main')
     </script>
+    {% endraw %}
 {% include "../components/footer.html" %}

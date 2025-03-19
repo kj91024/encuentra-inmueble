@@ -1,7 +1,7 @@
 import { Thumbnail } from "../thumbnail/Thumbnail";
 
 export interface DataSource {
-    id?: bigint;
+    id?: number;
     thumbnail: Thumbnail;
     name: string;
     description: string;

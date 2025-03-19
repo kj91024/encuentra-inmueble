@@ -1,5 +1,5 @@
 export interface Thumbnail {
-    id?: bigint;
+    id: BigInt;
     url: string;
     created_at?: Date;
     updated_at?: Date;

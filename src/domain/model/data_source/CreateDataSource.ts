@@ -1,6 +1,6 @@
 export interface CreateDataSource {
-    id?: bigint;
-    id_thumbnail?: bigint;
+    id?: number;
+    id_thumbnail?: BigInt;
     url_base: string;
     name: string;
     description: string;

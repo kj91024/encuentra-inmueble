@@ -1,7 +1,8 @@
 {% include "../components/header.html" %}
-<main class="flex justify-center min-h-screen bg-slate-100">
+
+{% raw %}
+<main id="main" class="flex justify-center min-h-screen bg-slate-100">
     <div class="container pl-3 pr-3 pt-8 pb-8">
-        <!--[-->
         <div class="flex gap-8">
             <div class="basis-3/12">
                 <form action="">
@@ -13,27 +14,51 @@
                             </h1>
                         </div>
                         <div class="grid card-content p-4 gap-4">
+
+                            <div class="flex gap-4">
+                                <div class="grid gap-2">
+                                    <h4 class="font-semibold">Orden</h4>
+                                    <label for="order">
+                                        <div class="text-sm mb-2">Ordenar de manera</div>
+                                        <select v-model="filter.order" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="order">
+                                            <option value="1">De mayor precio a menor</option>
+                                            <option value="2">De menor precio a mayor</option>
+                                            <option value="3">De mas actualizado a menos actualizado</option>
+                                            <option value="4">De menos actualizado a más actualizado</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="grid gap-2 basis-3/12">
+                                    <h4 class="font-semibold">Paginación</h4>
+                                    <label for="order">
+                                        <div class="text-sm mb-2">Cantidad</div>
+                                        <input id="size" type="number" min="20" v-model="filter.size" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                    </label>
+                                </div>
+                            </div>
+
                             <div class="grid gap-2">
                                 <h4 class="font-semibold">Rango de precio</h4>
                                 <div class="flex gap-3">
                                     <div class="basis-4/12">
-                                        <label for="">
+                                        <label for="currency">
                                             <div class="text-sm mb-2">Divisa</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option>Todas</option>
+                                            <select v-model="filter.currency" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="currency">
+                                                <option value="0">Todo</option>
+                                                <option v-for="currency in currencies" :value="currency.id">{{ currency.name }}</option>
                                             </select>
                                         </label>
                                     </div>
                                     <div class="basis-4/12">
-                                        <label for="">
+                                        <label for="min_price">
                                             <div class="text-sm mb-2">Precio mínimo</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            <input id="min_price" type="number" min="0" v-model="filter.min_price" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
                                         </label>
                                     </div>
                                     <div class="basis-4/12">
-                                        <label for="">
+                                        <label for="max_price">
                                             <div class="text-sm mb-2">Precio máximo</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            <input id="max_price" type="number" min="0" v-model="filter.max_price" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
                                         </label>
                                     </div>
                                 </div>
@@ -42,44 +67,45 @@
                                 <h4 class="font-semibold">Rango de área</h4>
                                 <div class="flex gap-3">
                                     <div class="basis-6/12">
-                                        <label for="">
+                                        <label for="min_area">
                                             <div class="text-sm mb-2">Área mínima</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            <input id="min_area" min="0" type="number" v-model="filter.min_area" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
                                         </label>
                                     </div>
                                     <div class="basis-6/12">
-                                        <label for="">
+                                        <label for="max_area">
                                             <div class="text-sm mb-2">Área máxima</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            <input id="max_area" min="0" type="number" v-model="filter.max_area" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="grid gap-2">
                                 <h4 class="font-semibold">Ubicación</h4>
-                                <div class="flex gap-3">
-                                    <div class="basis-6/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Departamento</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option value="">Todas</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div class="basis-6/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Provincia</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option value="">Todas</option>
-                                            </select>
-                                        </label>
-                                    </div>
+                                <div>
+                                    <label for="departament">
+                                        <div class="text-sm mb-2">Departamento</div>
+                                        <select v-model="filter.id_departament" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="departament">
+                                            <option value="0">Todas</option>
+                                            <option v-for="departament in departaments" :value="departament.id">{{ departament.name }}</option>
+                                        </select>
+                                    </label>
                                 </div>
                                 <div>
-                                    <label for="">
+                                    <label for="province">
+                                        <div class="text-sm mb-2">Provincia</div>
+                                        <select v-model="filter.id_province" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="province">
+                                            <option value="0">Todas</option>
+                                            <option v-for="province in provinces" :value="province.id">{{ province.name }}</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="district">
                                         <div class="text-sm mb-2">Distrito</div>
-                                        <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                            <option value="">Todas</option>
+                                        <select v-model="filter.id_district" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="district">
+                                            <option value="0">Todas</option>
+                                            <option v-for="district in districts" :value="district.id">{{ district.name }}</option>
                                         </select>
                                     </label>
                                 </div>
@@ -88,64 +114,209 @@
                                 <h4 class="font-semibold">Características</h4>
                                 <div class="flex gap-3">
                                     <div class="basis-6/12">
-                                        <label for="">
+                                        <label for="operation">
                                             <div class="text-sm mb-2">Tipo de operación</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option value="">Todas</option>
+                                            <select v-model="filter.id_operation" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="operation">
+                                                <option value="0">Todas</option>
+                                                <option v-for="operation in operations" :value="operation.id">{{ operation.name }}</option>
                                             </select>
                                         </label>
                                     </div>
                                     <div class="basis-6/12">
-                                        <label for="">
+                                        <label for="property">
                                             <div class="text-sm mb-2">Tipo de propiedad</div>
-                                            <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                                <option value="">Todas</option>
+                                            <select v-model="filter.id_property" class="w-full h-10 border rounded pl-2 pr-2 bg-white" id="property">
+                                                <option value="0">Todas</option>
+                                                <option v-for="property in properties" :value="property.id">{{ property.name }}</option>
                                             </select>
                                         </label>
                                     </div>
                                 </div>
-                                <div class="flex gap-3">
-                                    <div class="basis-4/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Pisos</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
-                                        </label>
+                                <div class="grid gap-3">
+                                    <div class="flex gap-3">
+                                        <div class="basis-6/12">
+                                            <label for="floor_1">
+                                                <div class="text-sm mb-2">Pisos minimos</div>
+                                                <input id="floor_1" v-model="filter.min_floors" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
+                                        <div class="basis-6/12">
+                                            <label for="floor_2">
+                                                <div class="text-sm mb-2">Pisos máximos</div>
+                                                <input id="floor_2" v-model="filter.max_floors" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="basis-4/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Baños</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
-                                        </label>
+                                    <div class="flex gap-3">
+                                        <div class="basis-6/12">
+                                            <label for="bathroom_1">
+                                                <div class="text-sm mb-2">Baños minimos</div>
+                                                <input id="bathroom_1" v-model="filter.min_bathrooms" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
+                                        <div class="basis-6/12">
+                                            <label for="bathroom_2">
+                                                <div class="text-sm mb-2">Baños máximos</div>
+                                                <input id="bathroom_2" v-model="filter.max_bathrooms" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="basis-4/12">
-                                        <label for="">
-                                            <div class="text-sm mb-2">Cuartos</div>
-                                            <input type="number" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
-                                        </label>
+                                    <div class="flex gap-3">
+                                        <div class="basis-6/12">
+                                            <label for="room_1">
+                                                <div class="text-sm mb-2">Cuartos mínimos</div>
+                                                <input id="room_1" v-model="filter.min_rooms" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
+                                        <div class="basis-6/12">
+                                            <label for="room_2">
+                                                <div class="text-sm mb-2">Cuartos máximos</div>
+                                                <input id="room_2" v-model="filter.max_rooms" type="number" min="0" placeholder="∞" class="w-full h-10 border rounded pl-2 pr-2">
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer p-4 pt-0">
+                            <div @click="listEstates" class="flex justify-center items-center w-full h-12 text-center bg-sky-200 rounded cursor-pointer" @click="listEstates">Realizar búsqueda geográfica</div>
+                        </div>
                     </div>
                 </form>
             </div>
-            <div class="basis-7/12">
+            <div class="basis-9/12">
                 <div id="map" class="h-full rounded-lg"></div>
             </div>
-            <div class="basis-2/12"> asdasd </div>
+            <!--<div class="basis-2/12 grid gap-2">
+                <div v-for="estate in estates" class="border p-2 rounded-md" style="border: 2px solid white">
+                    <div class="text-xs">{{ estate.info?.operation.name }} - {{ estate.info?.property.name }}</div>
+                    <div class="text-sm font-semibold">{{ estate.info?.currency.symbol }} {{ estate.info?.price.toLocaleString('en-US') }} {{ estate.info?.currency.iso }}</div>
+                    <h3 class="text-xs italic">{{ estate.gps.address }}</h3>
+                </div>
+            </div>-->
         </div>
-        <!--]-->
     </div>
 </main>
-<script>
-    var map = L.map('map').setView([51.505, -0.09], 13);
+<script type="module">
+    import {
+        CurrencyService, DepartamentService, ProvinceService,
+        DistrictService, OperationService, PropertyService,
+        EstateService
+    } from "/js/services/Masters.js";
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    const { createApp, ref, onBeforeMount, onMounted, watch } = Vue
 
-    L.marker([51.5, -0.09]).addTo(map)
-        .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-        .openPopup();
+    createApp({
+        setup() {
+            const currencyService = CurrencyService();
+            const departamentService = DepartamentService();
+            const provinceService = ProvinceService();
+            const districtService = DistrictService();
+            const operationService = OperationService();
+            const propertyService = PropertyService();
+            const estateService = EstateService();
+
+            const filter = ref({
+                order: 1, page: 0, size: 500,
+                id_departament: undefined, id_province: undefined, id_district: undefined, id_currency: undefined,
+                min_price: undefined, max_price: undefined, id_operation: undefined, id_property: undefined,
+                min_floors: undefined, max_floors: undefined, min_bathrooms: undefined, max_bathrooms: undefined,
+                min_area: undefined, max_area: undefined, min_rooms: undefined, max_rooms: undefined,
+            });
+
+            watch(() => filter.value.id_departament, async () => await listProvinces(), { deep: true });
+            watch(() => filter.value.id_province,    async () => await listDistricts(), { deep: true });
+
+            let map;
+            const currencies = ref([]);
+            const departaments = ref([]);
+            const provinces = ref([]);
+            const districts = ref([]);
+            const operations = ref([]);
+            const properties = ref([]);
+            const estates = ref([]);
+
+            const listCurrencies = async () => {
+                await currencyService.list((response) => currencies.value = response)
+            }
+
+            const listDepartaments = async () => {
+                await departamentService.list((response) => departaments.value = response)
+            }
+
+            const listProvinces = async () => {
+                await provinceService.list(filter.value.id_departament, (response) => provinces.value = response)
+            }
+            const listDistricts = async () => {
+                await districtService.list(filter.value.id_departament, filter.value.id_province, (response) => districts.value = response)
+            }
+
+            const listOperations = async () => {
+                await operationService.list((response) => operations.value = response)
+            }
+            const listProperties = async () => {
+                await propertyService.list((response) => properties.value = response)
+            }
+
+            const ucwords = ( text ) => {
+                if(text === null){
+                    return "";
+                }
+                return text.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                    return letter.toUpperCase();
+                });
+            }
+
+            let markers = [];
+            const listEstates = async () => {
+                await estateService.list(filter.value, (response) => {
+                    estates.value = response
+
+                    for (const marker of markers) {
+                        map.removeLayer(marker);
+                    }
+
+                    for (const estate of response) {
+                        let marker = L.marker([estate.gps.lat, estate.gps.lng]).addTo(map)
+                            .bindPopup(`
+                                <div class="margin-bottom:0.5rem">${ estate.info.operation.name } - ${ estate.info.property.name }</div>
+                                <div style="font-size:18px; font-weight: bold">${estate.info.currency.symbol } ${ estate.info.price.toLocaleString('en-US') } ${ estate.info.currency.iso }</div>
+                                <div style="font-size:14px">${ucwords(estate.gps.address)}</div>
+                                <div>
+                                    <a target="_blank" href="/estate/${estate.id}" style="display: inline-block;padding: 0.4rem 0.75rem;border-radius: 0.25rem;background: #fff;border: 1px solid #000;color: #000;margin-top: 0.25rem;margin-right:0.25rem;">Ir al inmueble</a>
+                                    <a target="_blank" href="${estate.url_source}" style="display: inline-block;padding: 0.4rem 0.75rem;border-radius: 0.25rem;background: #000;color: #fff;margin-top: 0.25rem;">Original</a>
+                                </div>
+                            `);
+                        markers.push(marker);
+                    }
+                })
+            }
+
+            onBeforeMount(async () => {
+                await Promise.all([listCurrencies(), listDepartaments(), listOperations(), listProperties()]);
+            });
+
+            onMounted(async () => {
+                map = L.map('map', { zoomControl: false, preferCanvas: true }).setView([-9.2937201,-75.2545796], 6);
+
+                let layer = L.tileLayer("https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", { maxZoom: 20 }).addTo(map);
+                layer.addTo(map);
+
+                await listEstates();
+
+                setTimeout(function () {
+                    window.dispatchEvent(new Event('resize'));
+                }, 10);
+            });
+
+            return {
+                filter,
+                currencies, departaments, provinces, districts, operations, properties, estates,
+                listEstates
+            }
+        }
+    }).mount('#main')
 </script>
+{% endraw %}
+
 {% include "../components/footer.html" %}

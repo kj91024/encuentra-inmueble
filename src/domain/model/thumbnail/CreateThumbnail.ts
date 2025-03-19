@@ -1,4 +1,4 @@
 export interface CreateThumbnail {
-    id?: bigint;
+    id?: BigInt;
     url: string;
 }

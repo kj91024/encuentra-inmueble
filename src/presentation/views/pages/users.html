@@ -1,10 +1,12 @@
 {% include "../components/header.html" %}
-<main class="flex justify-center min-h-screen bg-slate-100">
+
+{% raw %}
+<main id="main" class="flex justify-center min-h-[663px] bg-slate-100">
     <div class="container pl-3 pr-3 pt-8 pb-8">
         <!--[-->
         <div class="flex gap-8">
             <div class="basis-3/12">
-                <form action="">
+                <form @submit="save">
                     <div class="card bg-white rounded-lg border">
                         <div class="card-header p-4 border-bottom">
                             <h1 class="flex text-lg font-bold gap-1 items-center h-11">
@@ -15,57 +17,59 @@
                         <div class="grid card-content p-4 gap-3">
                             <div class="flex gap-3">
                                 <div class="basis-6/12">
-                                    <label for="">
+                                    <label for="names">
                                         <div class="text-sm mb-2">Nombres</div>
-                                        <input type="text" class="w-full h-10 border rounded pl-2 pr-2">
+                                        <input id="names" v-model="form.names.data" type="text" class="w-full h-10 border rounded pl-2 pr-2" required>
                                     </label>
                                 </div>
                                 <div class="basis-6/12">
-                                    <label for="">
+                                    <label for="last_names">
                                         <div class="text-sm mb-2">Apellidos</div>
-                                        <input type="text" class="w-full h-10 border rounded pl-2 pr-2">
+                                        <input id="last_names" v-model="form.last_names.data" type="text" class="w-full h-10 border rounded pl-2 pr-2" required>
                                     </label>
                                 </div>
                             </div>
-                            <label for="">
+                            <label for="email">
                                 <div class="text-sm mb-2">Email</div>
-                                <input type="text" class="w-full h-10 border rounded pl-2 pr-2">
+                                <input id="email" v-model="form.email.data" type="email" class="w-full h-10 border rounded pl-2 pr-2" required>
                             </label>
-                            <label for="">
+                            <label for="username">
                                 <div class="text-sm mb-2">Usuario</div>
-                                <input type="text" class="w-full h-10 border rounded pl-2 pr-2">
+                                <input id="username" v-model="form.username.data" type="text" class="w-full h-10 border rounded pl-2 pr-2 text-center" required>
                             </label>
                             <div class="flex gap-3">
                                 <div class="basis-6/12">
-                                    <label for="">
+                                    <label for="password">
                                         <div class="text-sm mb-2">Contraseña</div>
-                                        <input type="password" class="w-full h-10 border rounded pl-2 pr-2">
+                                        <input id="password" v-model="form.password.data" type="password" class="w-full h-10 border rounded pl-2 pr-2 text-center" required>
                                     </label>
                                 </div>
                                 <div class="basis-6/12">
-                                    <label for="">
+                                    <label for="password2">
                                         <div class="text-sm mb-2">Repitir Contraseña</div>
-                                        <input type="password" class="w-full h-10 border rounded pl-2 pr-2">
+                                        <input id="password2" v-model="form.repassword.data" type="password" class="w-full h-10 border rounded pl-2 pr-2 text-center" required>
                                     </label>
                                 </div>
                             </div>
-                            <label for="">
+                            <label for="role">
                                 <div class="text-sm mb-2">Rol</div>
-                                <select class="w-full h-10 border rounded pl-2 pr-2 bg-white" name="" id="">
-                                    <option value="">Escoge un rol</option>
-                                    <option value="">Administrador</option>
-                                    <option value="">Usuario</option>
+                                <select id="role" class="w-full h-10 border rounded pl-2 pr-2 bg-white text-center" v-model="form.role.data" required>
+                                    <option>Escoge un rol</option>
+                                    <option value="ADMIN">Administrador</option>
+                                    <option value="ANALYST">Analista</option>
+                                    <option value="MONITOR">Monitor</option>
                                 </select>
                             </label>
                         </div>
                         <div class="card-footer p-4 pt-0">
-                            <button class="w-full h-12 text-center bg-emerald-500 rounded">Agregar / Actualizar</button>
+                            <button :class="['w-full h-12 text-center rounded', form.id.data ? 'bg-sky-500' : 'bg-emerald-500']">{{ form.id.data ? 'Actualizar' : 'Agregar' }}</button>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="basis-9/12">
                 <div class="grid gap-8">
+                    <!--
                     <div class="grid grid-cols-4 gap-8">
                         <div>
                             <div class="card flex gap-2 p-3 bg-white border rounded-lg">
@@ -112,6 +116,7 @@
                             </div>
                         </div>
                     </div>
+                    -->
                     <div class="card bg-white rounded-lg border">
                         <div class="card-header p-4 border-bottom">
                             <div class="flex justify-between">
@@ -121,20 +126,13 @@
                                         <span>Listado de Usuarios</span>
                                     </h2>
                                 </div>
-                                <div>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">                                        
-                                        <i class="bi bi-download text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Descargar</span>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                         <div class="card-content p-4">
-                            <table class="table-auto" width="100%">
+                            <table v-if="list.length" class="table-auto" width="100%">
                                 <thead class="text-sm">
                                     <tr>
                                         <th class="w-10">ID</th>
-                                        <th></th>
                                         <th class="text-left">Nombres y Apellidos</th>
                                         <th>Usuario</th>
                                         <th>Rol</th>
@@ -144,29 +142,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
+                                    <tr v-for="item in list">
+                                        <td class="text-center">{{ item.id }}</td>
                                         <td>
-                                            <img src="img/icon/logo.svg" class="w-11 h-11">
-                                        </td>
-                                        <td>
-                                            <div>Kevin Jhomar Sanchez Sanchez</div>
+                                            <div>{{ item.names }} {{ item.last_names }}</div>
                                             <div class="text-sm text-gray-600">
-                                                <i>kj91024@gmail.com</i>
+                                                <i>{{ item.email }}</i>
                                             </div>
                                         </td>
-                                        <td class="text-center">kj91024</td>
+                                        <td class="text-center">{{ item.username }}</td>
                                         <td class="text-center">
-                                            <b class="text-xs italic">ADMINISTRADOR</b>
+                                            <b class="text-xs italic">{{ item.role }}</b>
                                         </td>
-                                        <td class="text-center">Hace 12 días</td>
-                                        <td class="text-center">Hace 1 mes</td>
+                                        <td class="text-center">{{ prettyDate(item.last_login_at) }}</td>
+                                        <td class="text-center">{{ prettyDate(item.updated_at) }}</td>
                                         <td class="text-center">
                                             <div class="flex gap-2 justify-center">
-                                                <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                <a @click="edit(item.id)" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
                                                     <i class="bi bi-pen text-lg w-5 h-5 flex items-center justify-center"></i>
                                                 </a>
-                                                <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                <a @click="remove(item.id)" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
                                                     <i class="bi bi-trash3 text-lg w-5 h-5 flex items-center justify-center"></i>
                                                 </a>
                                             </div>
@@ -174,6 +169,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <p v-else class="text-center italic">Aún no hay datos</p>
                         </div>
                     </div>
                 </div>
@@ -182,4 +178,75 @@
         <!--]-->
     </div>
 </main>
+
+<script type="module">
+    import { prettyDate } from "/js/helpers/Time.js";
+    import { createDefaultForm, deepCopy, valueRef, defaultData } from "/js/helpers/Utils.js";
+    import { UserService } from "/js/services/Masters.js";
+
+    const { createApp, ref, onBeforeMount } = Vue
+
+    createApp({
+        setup() {
+            const service = UserService();
+
+            const formDefault = createDefaultForm(['id', 'names', 'last_names', 'email', 'username', 'password', 'repassword', 'role']);
+            const form = ref(deepCopy(formDefault));
+
+            const list = ref([]);
+
+            const _list = async () => {
+                await service.list((response) => {
+                    list.value = response;
+                });
+            }
+
+            onBeforeMount(_list);
+
+            const save = async (e) => {
+                e.preventDefault();
+
+                if(form.value.password.data !== form.value.repassword.data){
+                    alert("Las contrases no coinciden");
+                    return;
+                }
+
+                const data = valueRef(form);
+                form.value.id.data
+                    ? await service.update(data)
+                    : await service.insert(data);
+                await _list();
+                form.value = deepCopy(formDefault);
+            }
+
+            const edit = async (id) => {
+                await service.find(id, (response) => {
+                    let temp = deepCopy(formDefault);
+                    Object.entries(temp).forEach(([key, value]) => {
+                        if(response[key]){
+                            temp[key] = defaultData(response[key]);
+                        }
+                    });
+                    form.value = temp;
+                });
+            }
+
+            const remove = async (id) => {
+                await service.remove(id, _list);
+            }
+
+            const clean = () => {
+                form.value = deepCopy(formDefault);
+            }
+
+            return {
+                form, list,
+                save, edit, remove, clean,
+                prettyDate
+            }
+        }
+    }).mount('#main')
+</script>
+{% endraw %}
+
 {% include "../components/footer.html" %}

@@ -6,18 +6,17 @@ import { DataSourceRepository } from "@domain/repository/DataSourceRepository";
 import { DataSourceRepositoryImp } from "@infrastructure/persistences/DataSourceRepositoryImp";
 import { FastifyInstance } from "fastify";
 import { ThumbnailUseCase } from "./ThumbnailUseCase";
+import { DataSourceEntity } from "@domain/entity/data_source/DataSourceEntity";
+import { DataSourceRaw } from "@domain/entity/data_source/DataSourceRaw";
+import { DataSourceMapper } from "@domain/mappers/DataSourceMapper";
 
 export class DataSourceUseCase {
-    dataSourceRepository: DataSourceRepository;
-    thumbnailUseCase: ThumbnailUseCase;
+    private dataSourceRepository: DataSourceRepository;
+    private thumbnailUseCase: ThumbnailUseCase;
 
     constructor(fastify: FastifyInstance) {
         this.dataSourceRepository = new DataSourceRepositoryImp(fastify);
         this.thumbnailUseCase = new ThumbnailUseCase(fastify);
-    }
-
-    public find = async (id: bigint) => {
-        return this.dataSourceRepository.find(id);
     }
 
     public getDomain = (url: string): string => {
@@ -28,15 +27,11 @@ export class DataSourceUseCase {
         }
     }
 
-    public save = async (data: CreateDataSource): Promise<DataSource | void> => {
-        return data.id ? await this.update(data) : await this.insert(data);
-    }
-
     private existDomain = async (domain: string, name: string): Promise<boolean> => {
         return await this.dataSourceRepository.existDomain(domain, name);
     }
 
-    public insert = async (data: CreateDataSource): Promise<DataSource> => {
+    public insert = async (data: CreateDataSource): Promise<number> => {
         const domain = this.getDomain(data.url_base);
         const url_base = `https://${domain}/`;
 
@@ -44,64 +39,68 @@ export class DataSourceUseCase {
             throw new Error('Ya existe esta fuente de datos');
         }
 
-        let createThumbnail: CreateThumbnail = {
-            url: `https://${domain}/favicon.ico`
+        const createThumbnail: CreateThumbnail = {
+            url: `https://external-content.duckduckgo.com/ip3/${domain}.ico`
         };
 
-        let thumbnail: Thumbnail = await this.thumbnailUseCase.insert(createThumbnail);
+        const id_thumbnail = await this.thumbnailUseCase.insert(createThumbnail);
 
-        let dataSource: DataSource = {
-            thumbnail: thumbnail,
+        const entity: DataSourceEntity = {
+            id_thumbnail: id_thumbnail,
             name: data.name,
             description: data.description,
             domain: domain,
             url_base: url_base
         };
         
-        dataSource.id = await this.dataSourceRepository.insert(dataSource);
-
-        return dataSource;
+        return await this.dataSourceRepository.insert(entity);
     }
 
     public update = async (data: CreateDataSource): Promise<void> => {
-        if(!data.id){
+        if(!data.id) {
             throw new Error("Falta el ID de la fuente de datos");
         }
 
         const domain = this.getDomain(data.url_base);
         const url_base = `https://${domain}/`;
         
-        if(await this.existDomain(domain, data.name)){
-            throw new Error('Ya existe esta fuente de datos');
+        if(!await this.existDomain(domain, data.name)){
+            throw new Error('No existe esta fuente de datos');
         }
 
-        let dataSource = await this.dataSourceRepository.find(data.id);
+        let raw = await this.dataSourceRepository.find(data.id);
         
-        if(!dataSource){
-            throw new Error("Esta fuente de datos no existe");
-        }
-        
-        dataSource.description = data.description;
-        dataSource.domain = domain;
-        dataSource.name = data.name;
-        dataSource.url_base = url_base;
-
         let createThumbnail: CreateThumbnail = {
-            id: dataSource.thumbnail.id,
-            url: `https://${domain}/favicon.ico`
+            id: raw.id_thumbnail,
+            url: `https://external-content.duckduckgo.com/ip3/${domain}.ico`
         }
-
-        dataSource.thumbnail.url = createThumbnail.url;
         
         await this.thumbnailUseCase.update(createThumbnail);
-        await this.dataSourceRepository.update(dataSource);
+
+        let entity: DataSourceEntity = {
+            id_data_source: raw.id_data_source,
+            id_thumbnail: raw.id_thumbnail,
+            name: data.name,
+            description: data.description,
+            domain: domain,
+            url_base: url_base
+        }
+        
+        await this.dataSourceRepository.update(entity);
     }
 
-    public remove = async (id: bigint): Promise<void> => {
+    public remove = async (id: number): Promise<void> => {
         await this.dataSourceRepository.delete(id);
     }
 
     public list = async (): Promise<DataSource[]> => {
-        return await this.dataSourceRepository.findAll();
+        let raws = await this.dataSourceRepository.findAll();
+        return raws.map(raw => DataSourceMapper.rawToModel(raw));
+        
+    }
+
+    public find = async (id: number): Promise<DataSource> => {
+        let raw = await this.dataSourceRepository.find(id);
+        return DataSourceMapper.rawToModel(raw);
     }
 }

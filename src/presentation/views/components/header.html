@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-capo="">
     <head>
-        <title>{{ page_title}}</title>
+        <title>{{ page_title }}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,111 +13,128 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/lint/lint.min.js" integrity="sha512-fzIkwQa9H8rjoDzpZ9sMOYhgaYwh9nKALWbE1m+7wpiry9PN5OyNcZ9LySotjEysolveRyv2C9pVJ+DbEuKtmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/lint/javascript-lint.min.js" integrity="sha512-8kwyIAPFqkeXy+ZFifnFBF57n5pSsXBBWuy9ME1hPCku0evC+UFNnWZOJlITFe/OMSxGi/oWaccjZ07L6YXzJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.9.6/ace.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js" defer></script>
     </head>
     <body>
-            
-        <header class="shadow-2xl">
-            <div class="flex justify-center border-bottom">
-                <div class="container flex p-3 justify-between">
-                    <a href="/" class="flex gap-4">
-                        <div>
-                            <img src="/img/icon/logo.svg" class="w-11 h-11">
-                        </div>
-                        <div>
-                            <div class="font-bold text-lg">Encuentra Inmueble</div>
-                            <div class="slogan text-xs italic text-gray-600">Datos precisos, decisiones inteligentes</div>
-                        </div>
-                    </a>
-                    <div>
-                        <form action="" class="flex border rounded-md overflow-hidden w-96">
-                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer white">
-                                <i class="bi bi-search flex items-center justify-center w-5 h-5"></i>
-                            </a>
-                            <div class="flex-1 input pr-3">
-                                <input class="h-full w-full pt-2 pb-2 outline-none" type="text" placeholder="Buscar inmueble...">
+
+        {% raw %}
+        <div id="asd">
+            <header>
+                <div class="flex justify-center border-bottom">
+                    <div class="container flex pt-5 pb-5 pl-3 pr-3 justify-between">
+                        <a href="/" class="flex gap-4">
+                            <div class="flex items-center">
+                                <img src="/img/icon/logo.svg" class="h-6">
                             </div>
+                            <div>
+                                <div class="font-bold text-lg">Mio Corporación</div>
+                                <div class="slogan text-sm italic text-gray-600">Sistema de monitoreo de inmuebles</div>
+                            </div>
+                        </a>
+
+                        <nav class="flex gap-4">
+                            <a href="/estates" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
+                                <i class="bi bi-buildings flex items-center justify-center w-5 h-5"></i>
+                                <span>Inmuebles</span>
+                            </a>
+                            <a href="/map" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
+                                <i class="bi bi-map flex items-center justify-center w-5 h-5"></i>
+                                <span>Mapa</span>
+                            </a>
+                            <a v-if="user.role === 'ADMIN' || user.role === 'ANALYST'" href="/feature" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
+                                <i class="bi bi-box flex items-center justify-center w-5 h-5"></i>
+                                <span>Caracteristicas</span>
+                            </a>
+                            <a v-if="user.role === 'ADMIN'" href="/users" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
+                                <i class="bi bi-people flex items-center justify-center w-5 h-5"></i>
+                                <span>Usuarios</span>
+                            </a>
+                            <a v-if="user.role === 'ADMIN' || user.role === 'ANALYST'" href="/data-sources" class="router-link-active router-link-exact-active flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
+                                <i class="bi bi-link-45deg flex items-center justify-center w-5 h-5"></i>
+                                <span>Fuente de datos</span>
+                            </a>
+                        </nav>
+
+                        <div class="flex gap-3 justify-end">
+                            <div class="flex gap-4 content-center pl-3">
+                                <div>
+                                    <img :src="`https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(user.username)}`" class="w-11 h-11 rounded-md shadow-md" alt="">
+                                </div>
+                                <div>
+                                    <div class="text-sm" style="line-height: 1rem;">{{ user.names }},<br> {{ user.last_names }}</div>
+                                    <div class="text-xs text-gray-600"><span>@{{ user.username }}</span></div>
+                                </div>
+                                <a href="/logout" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-red-100">
+                                    <i class="bi bi-power flex items-center justify-center w-5 h-5 text-2xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="bg-slate-100">
+                <div class="flex justify-center">
+                    <div class="container p-3 pt-8 pb-0">
+                        <form id="search" class="flex bg-slate-200 p-3 gap-3 rounded-lg">
+                            <a @click="findLink" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer white bg-gray-100 p-2 w-32 gap-2">
+                                <i class="bi bi-search flex items-center justify-center w-5 h-5"></i>
+                                <span>Buscar</span>
+                            </a>
+                            <div class="flex-1 input border rounded-md bg-white">
+                                <input v-model="link" class="h-full w-full pt-2 pb-2 outline-none text-center" type="text" placeholder="Buscar inmueble por URL: https://ejemplo-inmueble.com/...">
+                            </div>
+                            <a @click="findLink" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer white bg-gray-100 p-2 w-32 gap-2">
+                                <i class="bi bi-send flex items-center justify-center w-5 h-5"></i>
+                                <span>Enviar URL</span>
+                            </a>
                         </form>
                     </div>
-                    <div class="flex gap-3 justify-end">
-                        <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
-                            <i class="bi bi-heart flex items-center justify-center w-5 h-5"></i>
-                        </a>
-                        <div class="flex gap-2 content-center pl-3">
-                            <div>
-                                <img src="/img/icon/user.svg" class="w-11 h-11">
-                            </div>
-                            <div>
-                                <div class="text-xs text-gray-600 italic">ADMINISTRADOR</div>
-                                <div>Kevin Sanchez</div>
-                            </div>
-                            <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-red-200">
-                                <i class="bi bi-power flex items-center justify-center w-5 h-5 text-2xl"></i>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <div class="flex justify-center border-bottom">
-                <div class="container flex justify-between pl-3 pr-3">
-                    <nav class="flex gap-3 p-2">
-                        
-                        <a href="/" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-speedometer2 flex items-center justify-center w-5 h-5"></i>
-                            <span>Dashboard</span>
-                        </a>
-                        <a href="/users" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md bg-emerald-100">
-                            <i class="bi bi-people flex items-center justify-center w-5 h-5"></i>
-                            <span>Usuarios</span>
-                        </a>
-                        <a href="/roles" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-person-bounding-box flex items-center justify-center w-5 h-5"></i>
-                            <span>Roles</span>
-                        </a>
-                    </nav>
-                    <nav class="flex gap-3 p-2">
-                        
-                        <a href="/estates" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-buildings flex items-center justify-center w-5 h-5"></i>
-                            <span>Inmuebles</span>
-                        </a>
-                        <a href="/projects" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-journals flex items-center justify-center w-5 h-5"></i>
-                            <span>Proyectos</span>
-                        </a>
-                        <a href="/divises" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-cash-stack flex items-center justify-center w-5 h-5"></i>
-                            <span>Divisa</span>
-                        </a>
-                        <a href="/operations" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-folder2-open flex items-center justify-center w-5 h-5"></i>
-                            <span>Operaciones</span>
-                        </a>
-                        <a href="/properties" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-building-gear flex items-center justify-center w-5 h-5"></i>
-                            <span>Propiedades</span>
-                        </a>
-                    </nav>
-                    <nav class="flex gap-3 p-2">
-                        <a href="/map" class="flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-map flex items-center justify-center w-5 h-5"></i>
-                            <span>Mapa</span>
-                        </a>
-                        <a aria-current="page" href="/data-sources" class="router-link-active router-link-exact-active flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-link-45deg flex items-center justify-center w-5 h-5"></i>
-                            <span>Fuente de datos</span>
-                        </a>
-                        <a aria-current="page" href="/scrapers" class="router-link-active router-link-exact-active flex pt-2 pb-2 items-center gap-1 pl-2 pr-2 rounded-md">
-                            <i class="bi bi-robot flex items-center justify-center w-5 h-5"></i>
-                            <span>Scrapers</span>
-                        </a>
-                    </nav>
-                </div>
-            </div>
-        </header>
+        </div>
+        <script type="module">
+            import { EstateService } from "/js/services/Masters.js";
+
+            const { createApp, ref, onMounted } = Vue
+
+            createApp({
+                setup() {
+                    const estateService = EstateService();
+                    const user = ref({});
+                    const link = ref();
+
+                    const isUrlValid = (url) => {
+                        try {
+                            new URL(url);
+                            return true;
+                        } catch (_) {
+                            return false;
+                        }
+                    }
+
+                    const findLink = async () => {
+                        if(isUrlValid(link.value.trim())){
+                            await estateService.findLink(link.value.trim(), (response) => {
+                                const id = response;
+                                if(id){
+                                    console.log("ASD");
+                                    location.href = `/estate/${id}`;
+                                } else {
+                                    alert('Este inmueble aún no ha sido scrapeado');
+                                }
+                            })
+                        } else {
+                            alert('Debes ingresar una URL');
+                        }
+                    }
+
+                    onMounted(() => {
+                        user.value = JSON.parse(Cookies.get('user'));
+                    });
+
+                    return { link, findLink, user }
+                }
+            }).mount('#asd')
+        </script>
+        {% endraw %}

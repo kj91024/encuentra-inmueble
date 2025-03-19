@@ -1,14 +1,79 @@
 {% include "../components/header.html" %}
-<main class="flex justify-center min-h-screen bg-slate-100">
+<script>
+    const id_estate = {{ id_estate }};
+</script>
+{% raw %}
+<main id="main" class="flex justify-center min-h-[663px] bg-slate-100">
     <div class="container pl-3 pr-3 pt-8 pb-8">
         <div class="grid gap-8">
+
+            <div class="grid grid-cols-2 gap-8">
+                <div class="grid gap-8">
+                    <div class="grid gap-4">
+                        <div :href="estate.data_source?.url_base" class="flex p-1 pl-0 rounded gap-2 items-center">
+                            <div><img :src="estate.data_source?.thumbnail.url" width="25px" height="25px" class="rounded"></div>
+                            <div class="text-lg">{{ estate.data_source?.name }}</div>
+                        </div>
+                        <h2 class="text-3xl font-bold">{{ estate.address }}</h2>
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl font-semibold">{{ estate.info?.operation.name }} - {{ estate.info?.property.name }}</div>
+                            <div class="text-2xl font-semibold">{{ estate.info?.currency.symbol }} {{ estate.info?.price.toLocaleString('en-US') }} {{ estate.info?.currency.iso }}</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 justify-center bg-white p-2 rounded-lg border">
+                        <div v-if="estate.info?.area" class="p-5">
+                            <div class="flex justify-center">
+                                <i class="bi bi-bounding-box-circles flex h-11 w-11 text-3xl items-center justify-center"></i>
+                            </div>
+                            <div class="text-lg font-semibold text-center">{{ estate.info?.area.toLocaleString('en-US') }} m2</div>
+                        </div>
+                        <div v-if="estate.info?.floors" class="p-5">
+                            <div class="flex justify-center">
+                                <i class="bi bi-building flex h-11 w-11 text-3xl items-center justify-center"></i>
+                            </div>
+                            <div class="text-lg font-semibold text-center">{{ estate.info?.floors }} pisos</div>
+                        </div>
+                        <div v-if="estate.info?.bathrooms" class="p-5">
+                            <div class="flex justify-center">
+                                <i class="bi bi-backpack4 flex h-11 w-11 text-3xl items-center justify-center"></i>
+                            </div>
+                            <div class="text-lg font-semibold text-center">{{ estate.info?.bathrooms }} baños</div>
+                        </div>
+                        <div v-if="estate.info?.rooms" class="p-5">
+                            <div class="flex justify-center">
+                                <i class="bi bi-buildings flex h-11 w-11 text-3xl items-center justify-center"></i>
+                            </div>
+                            <div class="text-lg font-semibold text-center">{{ estate.info?.rooms }} cuartos</div>
+                        </div>
+                    </div>
+                    <!--<div class="grid gap-2 bg-white p-6 rounded-lg border">
+                        <h3 class="font-bold">Descripción</h3>
+                        <div>{{ estate.info?.description }}</div>
+                    </div>-->
+                    <div class="flex items-center gap-6 bg-white border p-6 rounded-lg">
+                        <div class="flex-none w-10 h-10">
+                            <img :src="estate.owner?.thumbnail.url" class="w-full h-full">
+                        </div>
+                        <div class="grid gap-1">
+                            <h3 class="font-bold">Propietario / Inmobiliaria</h3>
+                            <div>{{ estate.owner?.name }}</div>
+                            <div class="text-sm">Número de contacto: {{ estate.owner?.cellphone }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div id="map" class="h-full rounded-lg"></div>
+                    <div v-if="estate.gps?.address" class="absolute bottom-4 left-0 w-full font-semibold text-xl text-center p-2" style="z-index: 999; background: #ffffffb3;">{{ ucwords(estate.gps?.address) }}</div>
+                </div>
+            </div>
+
             <div class="flex justify-between">
                 <div class="flex gap-2">
                     <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100 gap-2 pl-3 pr-3 bg-white border">
                         <i class="bi bi-heart text-lg w-5 h-5 flex items-center justify-center"></i>
                         <span>Agregar favoritos</span>
                     </a>
-                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100 gap-2 pl-3 pr-3 bg-white border">
+                    <a :href="estate.url_source" target="_blank" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100 gap-2 pl-3 pr-3 bg-white border">
                         <i class="bi bi-box-arrow-right text-lg w-5 h-5 flex items-center justify-center"></i>
                         <span>Ir al sitio original</span>
                     </a>
@@ -37,60 +102,12 @@
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-8">
-                <div class="grid gap-8">
-                    <div class="grid gap-6">
-                        <h2 class="text-3xl font-bold">Av. Nicolás Ayllón Nro. 2929, El Agustino 15022, Lima</h2>
-                        <div class="flex justify-between items-center">
-                            <div class="text-lg font-semibold">Oficina</div>
-                            <div class="text-2xl font-semibold">Venta S/ 3,990</div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-4 justify-center bg-white p-2 rounded-lg border">
-                        <div class="p-5">
-                            <div class="flex justify-center">
-                                <i class="bi bi-bounding-box-circles flex h-11 w-11 text-3xl items-center justify-center"></i>
-                            </div>
-                            <div class="text-lg font-semibold text-center">42 m2</div>
-                        </div>
-                        <div class="p-5">
-                            <div class="flex justify-center">
-                                <i class="bi bi-building flex h-11 w-11 text-3xl items-center justify-center"></i>
-                            </div>
-                            <div class="text-lg font-semibold text-center">2 pisos</div>
-                        </div>
-                        <div class="p-5">
-                            <div class="flex justify-center">
-                                <i class="bi bi-backpack4 flex h-11 w-11 text-3xl items-center justify-center"></i>
-                            </div>
-                            <div class="text-lg font-semibold text-center">5 baños</div>
-                        </div>
-                        <div class="p-5">
-                            <div class="flex justify-center">
-                                <i class="bi bi-buildings flex h-11 w-11 text-3xl items-center justify-center"></i>
-                            </div>
-                            <div class="text-lg font-semibold text-center">4 cuartos</div>
-                        </div>
-                    </div>
-                    <div class="grid gap-2 bg-white p-6 rounded-lg border">
-                        <h3 class="font-bold">Descripción</h3>
-                        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, aperiam eius ipsam sequi veniam expedita harum dignissimos fugit cum! Perferendis illum nesciunt debitis possimus consequuntur commodi corporis fugit laborum architecto?</div>
-                    </div>
-                    <div class="flex items-center gap-6 bg-white border p-6 rounded-lg">
-                        <div class="flex-none w-10 h-10">
-                            <img src="{{ '/img/icon/logo.svg' }}" class="w-full h-full">
-                        </div>
-                        <div class="grid gap-1">
-                            <h3 class="font-bold">Propietario / Inmobiliaria</h3>
-                            <div>Admin7</div>
-                            <div class="text-sm">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deleniti possimus ipsam laboriosam omnis sequi natus, autem ullam recusandae temporibus, sed qui soluta perferendis repellat eum magni repellendus et eligendi modi?</div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div id="map" class="h-full rounded-lg"></div>
-                </div>
+
+            <div v-if="estate.thumbnails" class="grid grid-cols-5 gap-4">
+                <a v-for="thumbnail in estate.thumbnails" :href="thumbnail.url" target="_blank" style="border: 10px solid #fff; border-radius: 0.75rem;" class="bg-white flex justify-center"><img :src="thumbnail.url" class="rounded-md" style="height: 200px"></a>
             </div>
+
+            <!--
             <div class="grid grid-cols-3 gap-8">
                 <div>
                     <div class="card flex gap-2 p-3 bg-white border rounded-lg">
@@ -132,18 +149,53 @@
                     <div> Tabla Estadístico </div>
                 </div>
             </div>
+            -->
         </div>
     </div>
 </main>
-<script>
-    var map = L.map('map').setView([51.505, -0.09], 13);
+<script type="module">
+    import { EstateService } from "/js/services/Masters.js";
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    const { createApp, ref, onBeforeMount, onMounted, watch } = Vue
 
-    L.marker([51.5, -0.09]).addTo(map)
-        .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-        .openPopup();
+    createApp({
+        setup() {
+            const estateService = EstateService();
+
+            const estate = ref({});
+            let map;
+
+            const ucwords = ( text ) => {
+                return text.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                    return letter.toUpperCase();
+                });
+            }
+
+            const findEstate = async () => {
+                await estateService.find(id_estate, (response) => {
+                    estate.value = response;
+                    L.marker([response.gps.lat, response.gps.lng]).addTo(map)
+                        .bindPopup('Ubicación de la propiedad')
+                        .openPopup();
+                    map.setView([response.gps.lat, response.gps.lng], 20);
+                })
+            }
+
+            onMounted(async () => {
+                map = L.map('map', { zoomControl: false, preferCanvas: true }).setView([-9.2937201,-75.2545796], 6);
+                let layer = L.tileLayer("https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", { maxZoom: 20 }).addTo(map);
+                layer.addTo(map);
+
+                await findEstate();
+
+                setTimeout(function () {
+                    window.dispatchEvent(new Event('resize'));
+                }, 10);
+            });
+            return { estate, ucwords }
+        }
+    }).mount('#main');
 </script>
+{% endraw %}
+
 {% include "../components/footer.html" %}

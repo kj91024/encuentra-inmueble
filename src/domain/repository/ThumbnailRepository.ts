@@ -1,9 +1,13 @@
-import { Thumbnail } from "@domain/model/thumbnail/Thumbnail";
+import { ThumbnailEntity } from "@domain/entity/thumbnail/ThumbnailEntity";
+import { ThumbnailRaw } from "@domain/entity/thumbnail/ThumbnailRaw";
 
 export interface ThumbnailRepository {
-    insert(data: Thumbnail): Promise<bigint>;
-    update(data: Thumbnail): Promise<void>;
-    find(id: bigint): Promise<Thumbnail | null>;
-    findAll(): Promise<Thumbnail[]>;
-    delete(id: bigint): Promise<void>;
+    insert(data: ThumbnailEntity): Promise<BigInt>;
+    update(data: ThumbnailEntity): Promise<void>;
+
+    find(id: BigInt): Promise<ThumbnailRaw>;
+    findByUrl(url: string): Promise<ThumbnailRaw | null>;
+    findAll(): Promise<ThumbnailRaw[]>;
+    findAllByEstate(id_estate: BigInt): Promise<ThumbnailRaw[]>;
+    delete(id: BigInt): Promise<void>;
 }

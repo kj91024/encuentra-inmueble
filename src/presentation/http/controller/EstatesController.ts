@@ -5,7 +5,7 @@ export class EstatesController {
     constructor(fastify: FastifyInstance) {
         this.fastify = fastify;
         this.fastify.get('/estates', this.index);
-        this.fastify.get('/estate/:id', this.estate);
+        this.fastify.get('/estate/:id_estate', this.estate);
     }
 
     private async index (request: FastifyRequest, reply: FastifyReply) {
@@ -17,13 +17,11 @@ export class EstatesController {
     }
 
     private async estate (request: FastifyRequest, reply: FastifyReply) {
-        const {id} = request.params as {id: bigint};
+        const { id_estate } = request.params as {id_estate: BigInt};
         const data = {
-            page_title: 'Inmueble'
+            page_title: 'Inmueble',
+            id_estate: id_estate
         };
-
-        console.log(id);
-
         return reply.view('pages/estate.html', data);
     }
 }

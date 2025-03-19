@@ -1,6 +1,6 @@
 export interface CreatePortalScraper {
-    id?: bigint;
-    id_data_source: bigint;
+    id_portal_scraper?: number;
+    id_data_source: number;
     name: string;
     url_path: string;
 }

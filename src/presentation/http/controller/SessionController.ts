@@ -5,13 +5,12 @@ export class SessionController {
 
     constructor (fastify: FastifyInstance) {
         this.fastify = fastify;
-        this.fastify.get('/login', this.login);
+        this.fastify.get('/logout', this.logout);
     }
 
-    private async login(request: FastifyRequest, reply: FastifyReply) {
-        const data = {
-            page_title: 'Iniciar sesión'
-        };
-        return reply.view("login.html", data);
+    private async logout(request: FastifyRequest, reply: FastifyReply) {
+        return reply
+            .clearCookie("user", { path: '/' })
+            .redirect('/');
     }
 }

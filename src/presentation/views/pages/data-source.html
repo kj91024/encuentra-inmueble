@@ -1,33 +1,42 @@
 {% include "../components/header.html" %}
-    <main class="flex justify-center min-h-screen bg-slate-100">
+    <script>
+        const id_data_source = {{ id_data_source }};
+    </script>
+    {% raw %}
+    <main id="main" class="flex justify-center min-h-[663px] bg-slate-100">
         <div class="container pl-3 pr-3 pt-8 pb-8">
             
             <div class="flex gap-8">
                 <div class="grid basis-4/12 gap-8">
-                    <form action="">
+                    <form @submit="save">
                         <div class="card bg-white rounded-lg border">
                             <div class="flex justify-between p-4 border-bottom">
                                 <h1 class="flex text-lg font-bold gap-1 items-center h-11">
                                     <i class="bi bi-link-45deg flex items-center justify-center h-11 w-11 text-2xl"></i>
-                                    <span>Urbania</span>
+                                    <span>{{ dataSource.name }}</span>
                                 </h1>
-
-                                <a href="{{ '/scraper/1' }}" class="flex min-w-11 h-11 justify-center gap-2 pl-2 pr-2 items-center rounded-md cursor-pointer bg-slate-100">
+                                <a v-if="portals.length" :href="`/scraper/${dataSource.id}`" class="flex min-w-11 h-11 justify-center gap-2 pl-2 pr-2 items-center rounded-md cursor-pointer bg-slate-100">
                                     <i class="bi bi-robot text-lg w-5 h-5 flex items-center justify-center"></i>
                                     <span>Área de Scraping</span>
                                 </a>
                             </div>
                             <div class="grid card-content p-4 gap-3">
-                                <label for="">
-                                    <div class="text-sm mb-2">Link del portal</div>
+                                <label for="url_base">
+                                    <div class="text-sm mb-2">Path principal de un portal</div>
                                     <div class="flex border rounded">
-                                        <div class="flex items-center p-2 text-gray-600 bg-gray-100">https://urbania.com/</div>
-                                        <div class="flex-1"><input type="text" class="w-full h-10 pl-2 pr-2"></div>
+                                        <div class="flex items-center p-2 text-gray-600 bg-gray-100">{{ dataSource.url_base }}</div>
+                                        <div class="flex-1"><input v-model="form.url_path.data" id="url_base" type="text" class="w-full h-10 pl-2 pr-2" required></div>
                                     </div>
                                 </label>
+
+                                <label for="name">
+                                    <div class="text-sm mb-2">Nombre del portal</div>
+                                    <input id="name" type="text" v-model="form.name.data" class="w-full h-10 border rounded pl-2 pr-2" required>
+                                </label>
+
                             </div>
                             <div class="card-footer p-4 pt-0">
-                                <button class="w-full h-12 text-center bg-emerald-500 rounded">Agregar / Actualizar</button>
+                                <button :class="['w-full h-12 text-center rounded', form.id.data ? 'bg-sky-500' : 'bg-emerald-500']">{{ form.id.data ? 'Actualizar' : 'Agregar' }}</button>
                             </div>
                         </div>
                     </form>
@@ -41,34 +50,29 @@
                                         <span>Links de portales</span>
                                     </h2>
                                 </div>
-                                <div>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">
-                                        <i class="bi bi-download text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Descargar</span>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                         <div class="card-content p-4">
-                            <table class="table-auto" width="100%">
+                            <table v-if="portals.length" class="table-auto" width="100%">
                                 <thead class="text-sm">
                                     <tr>
-                                        <th class="w-10">ID</th>
                                         <th class="text-left">Link de portal</th>
                                         <th class="w-32"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td><a href="https://urbania.pe/" target="_blank">https://urbania.pe/listado</a></div>
+                                    <tr v-for="portal in portals">
+                                        <td>
+                                            <div><i>{{ portal.name }}</i></div>
+                                            <a class="text-sm" :href="`${dataSource.url_base}${portal.url_path}`" target="_blank">{{ dataSource.url_base }}{{ portal.url_path }}</a>
+                                        </td>
                                         <td class="text-center pr-0">
                                             <div class="flex gap-2 justify-center">
-                                                <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                <a @click="edit(portal.id)" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
                                                     <i class="bi bi-pen text-lg w-5 h-5 flex items-center justify-center"></i>
                                                 </a>
 
-                                                <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
+                                                <a @click="remove(portal.id)" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
                                                     <i class="bi bi-trash3 text-lg w-5 h-5 flex items-center justify-center"></i>
                                                 </a>
                                             </div>
@@ -76,6 +80,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <p v-else class="text-center italic">Aún no hay datos</p>
                         </div>
                     </div>
                 </div>
@@ -86,32 +91,24 @@
                                 <div class="flex items-center h-11">
                                     <h2 class="flex text-lg font-semibold gap-1">
                                         <i class="bi bi-list-nested flex items-center justify-center w-7 h-7"></i>
-                                        <span>Link de inmuebles</span>
+                                        <span>Links de inmuebles</span>
                                     </h2>
-                                </div>
-                                <div>
-                                    <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer gap-2 bg-sky-200 pl-3 pr-3">
-                                        <i class="bi bi-download text-lg w-5 h-5 flex items-center justify-center"></i>
-                                        <span>Descargar</span>
-                                    </a>
                                 </div>
                             </div>
                         </div>
                         <div class="card-content p-4">
-                            <table class="table-auto" width="100%">
+                            <table v-if="estateLinks.length" class="table-auto" width="100%">
                                 <thead class="text-sm">
                                     <tr>
-                                        <th class="w-10">ID</th>
                                         <th class="text-left">Link de inmueble</th>
-                                        <th class="w-40 text-center">Fecha de agregado</th>
+                                        <th class="w-40 text-center">Último procesamiento</th>
                                         <th class="w-16"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-center text-left"><a href="https://urbania.pe/" target="_blank">https://urbania.pe/</a></div>
-                                        <td class="text-center">12/12/2023 12:45</td>
+                                    <tr v-for="estateLink in estateLinks">
+                                        <td class="text-center text-left text-sm"><a :href="`${dataSource.url_base}${estateLink.url_path}`" target="_blank">{{ dataSource.url_base }}{{estateLink.url_path}}</a></div>
+                                        <td class="text-center">{{ prettyDate(dataSource.last_scraper) }}</td>
                                         <td class="text-center">
                                             <div class="flex gap-2 justify-center">
                                                 <a class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-slate-100">
@@ -122,6 +119,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <p v-else class="text-center italic">Aún no hay datos</p>
                         </div>
                     </div>
                 </div>
@@ -129,4 +127,94 @@
             
         </div>
     </main>
+
+    <script type="module">
+        import { prettyDate } from "/js/helpers/Time.js";
+        import { createDefaultForm, deepCopy, valueRef, defaultData } from "/js/helpers/Utils.js";
+        import { DataSourceService, EstateLinkService, PortalScraperService} from "/js/services/Scrapers.js";
+
+        const { createApp, ref, onBeforeMount } = Vue
+
+        createApp({
+            setup() {
+                const dataSourceService = DataSourceService();
+                const portalScraperService = PortalScraperService();
+                const estateLinkService = EstateLinkService();
+
+                const formDefault = createDefaultForm(['id', 'id_data_source', 'url_path', 'name']);
+                formDefault.id_data_source = defaultData(id_data_source);
+                const form = ref(deepCopy(formDefault));
+
+                const dataSource = ref({});
+                const portals = ref([]);
+                const estateLinks = ref([]);
+
+                const listPortals = async () => {
+                    await portalScraperService.list(id_data_source, (response) => {
+                        portals.value = response;
+                    });
+                }
+
+                const listEstateLinks = async () => {
+                    await estateLinkService.list({
+                        id_data_source,
+                        page: 0,
+                        size: 10
+                    }, (response) => {
+                        estateLinks.value = response;
+                    });
+                }
+
+                const findDataSource = async () => {
+                    await dataSourceService.find(id_data_source, (response) => {
+                        dataSource.value = response;
+                    });
+                }
+
+                onBeforeMount(async () => {
+                    await listPortals();
+                    await listEstateLinks();
+                    await findDataSource();
+                });
+
+                const save = async (e) => {
+                    e.preventDefault();
+                    const data = valueRef(form);
+                    form.value.id.data
+                        ? await portalScraperService.update(data)
+                        : await portalScraperService.insert(data);
+                    await listPortals();
+                    form.value = deepCopy(formDefault);
+                }
+
+                const edit = async (id) => {
+                    console.log(id);
+                    await portalScraperService.find(id, (response) => {
+                        let temp = deepCopy(formDefault);
+                        Object.entries(temp).forEach(([key, value]) => {
+                            if(response[key]){
+                                temp[key] = defaultData(response[key]);
+                            }
+                        });
+                        form.value = temp;
+                    });
+                }
+
+                const remove = async (id) => {
+                    await portalScraperService.remove(id, listPortals);
+                }
+
+                const clean = () => {
+                    form.value = deepCopy(formDefault);
+                }
+
+                return {
+                    form, dataSource, portals, estateLinks,
+                    save, edit, remove, clean, prettyDate
+                }
+            }
+        }).mount('#main')
+    </script>
+    {% endraw %}
+
 {% include "../components/footer.html" %}

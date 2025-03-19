@@ -10,10 +10,10 @@
 const prettyDate = (datetime) => {
     if(datetime === undefined || datetime === null) return 'Sin definir';
     // Crear un objeto Date desde la cadena
-    const dateUTC = new Date(datetime.replace('T', ' ') + 'Z'); // Añadir 'Z' para tratarlo como UTC
+    const dateUTC = new Date(datetime.replace('T', ' ') ); // Añadir 'Z' para tratarlo como UTC
     // Ajustar a UTC-5
-    const localDate = new Date(dateUTC.getTime() + (5 * 60 * 60 * 1000));
-    // const localDate = new Date(dateUTC.getTime());
+    //const localDate = new Date(dateUTC.getTime() + (5 * 60 * 60 * 1000));
+    const localDate = new Date(dateUTC.getTime());
 
     // Obtener las partes de la fecha y la hora
     let day = String(localDate.getUTCDate()).padStart(2, '0');
@@ -179,6 +179,17 @@ const timeUntilExpiration = (expirationDate) => {
     return `Expira en ${seconds} segundo${seconds > 1 ? 's' : ''}`;
 }
 
+// Devuelve el tiempo actual con el siguiente foramto: 2025-03-10 14:30:45
+const getFormattedDate = () => {
+    const now = new Date();
+    return now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, "0") + "-" +
+        String(now.getDate()).padStart(2, "0") + " " +
+        String(now.getHours()).padStart(2, "0") + ":" +
+        String(now.getMinutes()).padStart(2, "0") + ":" +
+        String(now.getSeconds()).padStart(2, "0");
+}
+
 export {
-    prettyDate, timeAgo, secondsToHHMM, secondsToHHMMSS, HHMMToSeconds, timeUntilExpiration
+    prettyDate, timeAgo, secondsToHHMM, secondsToHHMMSS, HHMMToSeconds, timeUntilExpiration, getFormattedDate
 }

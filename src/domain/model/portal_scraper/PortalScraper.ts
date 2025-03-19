@@ -1,8 +1,7 @@
 import { DataSource } from "@domain/model/data_source/DataSource.ts";
 
 export interface PortalScraper {
-    id?: bigint;
-    data_source: DataSource;
+    id?: number;
     name: string;
     url_path: string;
     user_agent?: string;
@@ -11,4 +10,5 @@ export interface PortalScraper {
     file?: string;
     created_at?: Date;
     updated_at?: Date;
+    last_scraped?: Date;
 }

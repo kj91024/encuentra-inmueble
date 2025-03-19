@@ -1,0 +1,153 @@
+{% include "../components/header.html" %}
+
+{% raw %}
+<main id="main"  class="flex justify-center min-h-[665px] bg-slate-100">
+    <div class="container pl-3 pr-3 pt-8 pb-8">
+
+        <h1 class="text-center text-3xl font-bold pb-4">Características del inmueble</h1>
+        <p class="text-center text-lg pb-8">En esta sección se presentan las principales características y herramientas empleadas en el proceso de web scraping para la recopilación de información sobre inmuebles en diversas plataformas en línea. Se detallan los métodos utilizados, los criterios de extracción de datos y las tecnologías aplicadas para garantizar la precisión y eficiencia del proceso.</p>
+
+        <div class="grid grid-cols-3 gap-8">
+            <div>
+                <div class="card bg-white rounded-lg border">
+                    <div class="card-header p-4 border-bottom">
+                        <div class="flex justify-between">
+                            <div class="flex items-center h-11">
+                                <h2 class="flex text-lg font-semibold gap-1">
+                                    <i class="bi bi-list-nested flex items-center justify-center w-7 h-7"></i>
+                                    <span>Listado de Divisas</span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content p-4">
+                        <table class="table-auto" width="100%">
+                            <thead class="text-sm">
+                                <tr>
+                                    <th class="w-10">ID</th>
+                                    <th>Símbolo</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>ISO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="currency in currencies">
+                                    <td class="text-center">{{ currency.id }}</td>
+                                    <td class="text-center">{{ currency.symbol }}</td>
+                                    <td class="text-center">{{ currency.name }}</td>
+                                    <td class="text-center text-sm">{{ currency.description }}</td>
+                                    <td class="text-center">{{ currency.iso }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card bg-white rounded-lg border">
+                    <div class="card-header p-4 border-bottom">
+                        <div class="flex justify-between">
+                            <div class="flex items-center h-11">
+                                <h2 class="flex text-lg font-semibold gap-1">
+                                    <i class="bi bi-list-nested flex items-center justify-center w-7 h-7"></i>
+                                    <span>Listado de Operaciones</span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content p-4">
+                        <table class="table-auto" width="100%">
+                            <thead class="text-sm">
+                                <tr>
+                                    <th class="w-10">ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="operation in operations">
+                                    <td class="text-center">{{ operation.id }}</td>
+                                    <td class="text-center">{{ operation.name }}</td>
+                                    <td class="text-center text-sm">{{ operation.description }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card bg-white rounded-lg border">
+                    <div class="card-header p-4 border-bottom">
+                        <div class="flex justify-between">
+                            <div class="flex items-center h-11">
+                                <h2 class="flex text-lg font-semibold gap-1">
+                                    <i class="bi bi-list-nested flex items-center justify-center w-7 h-7"></i>
+                                    <span>Listado de Propiedades</span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content p-4">
+                        <table class="table-auto" width="100%">
+                            <thead class="text-sm">
+                            <tr>
+                                <th class="w-10">ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="property in properties">
+                                    <td class="text-center">{{ property.id }}</td>
+                                    <td class="text-center">{{ property.name }}</td>
+                                    <td class="text-center text-sm">{{ property.description }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="module">
+    import {
+        CurrencyService, OperationService, PropertyService
+    } from "/js/services/Masters.js";
+
+    const { createApp, ref, onBeforeMount, onMounted, watch } = Vue
+
+    createApp({
+        setup() {
+            const currencyService = CurrencyService();
+            const operationService = OperationService();
+            const propertyService = PropertyService();
+
+            const currencies = ref([]);
+            const operations = ref([]);
+            const properties = ref([]);
+
+            const listCurrencies = async () => {
+                await currencyService.list((response) => currencies.value = response)
+            }
+            const listOperations = async () => {
+                await operationService.list((response) => operations.value = response)
+            }
+            const listProperties = async () => {
+                await propertyService.list((response) => properties.value = response)
+            }
+
+            onBeforeMount(async () => {
+                await Promise.all([listCurrencies(), listOperations(), listProperties()]);
+            });
+
+            return { currencies, operations, properties }
+        }
+    }).mount('#main')
+</script>
+{% endraw %}
+
+{% include "../components/footer.html" %}
