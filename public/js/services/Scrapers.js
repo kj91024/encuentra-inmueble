@@ -125,10 +125,12 @@ const PortalScraperService = () => {
     }
 
     const process = async (id_data_source, success_callback = () => {}, error_callback = () => {}) => {
-        const endpoint = `/api/portal-scraper/process/${id_data_source}`;
+        const endpoint = `/api/portal-scraper/process`;
 
         const data = {};
-        data.method = 'GET';
+        data.method = 'POST';
+        data.body = JSON.stringify({ id_data_source });
+        data.headers = {'Content-Type': 'application/json'};
 
         await processFetch(endpoint, data, success_callback, error_callback);
     }

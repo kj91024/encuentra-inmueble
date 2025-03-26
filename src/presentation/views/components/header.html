@@ -23,7 +23,7 @@
             <header>
                 <div class="flex justify-center border-bottom">
                     <div class="container flex pt-5 pb-5 pl-3 pr-3 justify-between">
-                        <a href="/" class="flex gap-4">
+                        <a href="/estates" class="flex gap-4">
                             <div class="flex items-center">
                                 <img src="/img/icon/logo.svg" class="h-6">
                             </div>
@@ -62,7 +62,7 @@
                                     <img :src="`https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(user.username)}`" class="w-11 h-11 rounded-md shadow-md" alt="">
                                 </div>
                                 <div>
-                                    <div class="text-sm" style="line-height: 1rem;">{{ user.names }},<br> {{ user.last_names }}</div>
+                                    <div class="text-sm" style="line-height: 1rem;">{{ user.names }},<br> <i>{{ user.last_names }}</i></div>
                                     <div class="text-xs text-gray-600"><span>@{{ user.username }}</span></div>
                                 </div>
                                 <a href="/logout" class="flex min-w-11 h-11 justify-center items-center rounded-md cursor-pointer bg-red-100">
@@ -130,7 +130,12 @@
                     }
 
                     onMounted(() => {
-                        user.value = JSON.parse(Cookies.get('user'));
+                        let cookie = Cookies.get('user');
+                        if(cookie){
+                            user.value = JSON.parse(cookie);
+                        } else {
+                            window.location.href = "/logout";
+                        }
                     });
 
                     return { link, findLink, user }

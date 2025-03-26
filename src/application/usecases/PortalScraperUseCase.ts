@@ -35,6 +35,12 @@ export class PortalScraperUseCase {
             return temp.split(final)[0];
         }
         
+        const compress = (html) => {
+            html = html.replace(/[\\n\\t]+/g, ' ').replace(/\\s{2,}/g, ' ');
+            html = html.replaceAll('> <','><');
+            return html;
+        }
+        
         globalThis.main = `;
 
     constructor (fastify: FastifyInstance) {

@@ -124,7 +124,7 @@ export class EstateMapper {
 
             gps: gps,
 
-            url_source: raw.url_source,
+            url_source: `${raw.url_base}${raw.url_path}`,
             address: raw.address,
 
             created_at: raw.created_at

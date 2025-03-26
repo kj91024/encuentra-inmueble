@@ -311,10 +311,7 @@
 
                 const processPortalScraper = async () => {
                     testResult.value.processing = true;
-                    await portalScraperService.process({
-                        id_data_source: dataSource.value.id,
-                        id_portal_scraper: portalScraper.value.id
-                    }, (res) => {
+                    await portalScraperService.process(dataSource.value.id, (res) => {
                         console.log(res);
                     });
                 }
@@ -359,7 +356,7 @@
                          * const getAddressAndUbigeoCode = async (lat: float, lon: float): { address: string, ubigeo: string }
                          */
 
-                        const main = (data_html) => {
+                        const main = async (ldh) => {
                             // Escribe aqui el codigo del scraper...
 
                         `).replaceAll("                        ", "");
@@ -376,24 +373,18 @@
                     let estateFinish = (`
                             // Retornar los datos del inmueble
                             return {
-                                id_departament, // number
-                                id_province, // number
-                                id_district, // number
-                                id_data_source, // number
-                                id_estate_link, // BigInt
-                                title, // string
-                                url_source, // string
-                                address , // string
+                                address, // string
 
                                 latitude, // number,
                                 longitude, // number
                                 gps_address, // string
+                                ubigeo,
 
                                 thumbnail_url, //string
                                 gallery, //string[] lleno de links de las fotos del inmueble
 
-                                id_operation, // number -> 1 es alquilar, 2 es venta, 3 es traspaso
-                                id_property, // number -> 1 es departamento, 2 es casa, 3 es terreno o lote, 4 es oficina, 5 es local
+                                id_operation, // number
+                                id_property, // number
                                 id_currency, // number
                                 description, // string
                                 floors, // number

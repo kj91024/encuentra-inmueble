@@ -277,17 +277,19 @@
                     }
 
                     for (const estate of response) {
-                        let marker = L.marker([estate.gps.lat, estate.gps.lng]).addTo(map)
-                            .bindPopup(`
-                                <div class="margin-bottom:0.5rem">${ estate.info.operation.name } - ${ estate.info.property.name }</div>
-                                <div style="font-size:18px; font-weight: bold">${estate.info.currency.symbol } ${ estate.info.price.toLocaleString('en-US') } ${ estate.info.currency.iso }</div>
+                        if(estate.info.price) {
+                            let marker = L.marker([estate.gps.lat, estate.gps.lng]).addTo(map)
+                                .bindPopup(`
+                                <div class="margin-bottom:0.5rem">${estate.info.operation.name} - ${estate.info.property.name}</div>
+                                <div style="font-size:18px; font-weight: bold">${estate.info.currency.symbol} ${estate.info.price.toLocaleString('en-US')} ${estate.info.currency.iso}</div>
                                 <div style="font-size:14px">${ucwords(estate.gps.address)}</div>
                                 <div>
                                     <a target="_blank" href="/estate/${estate.id}" style="display: inline-block;padding: 0.4rem 0.75rem;border-radius: 0.25rem;background: #fff;border: 1px solid #000;color: #000;margin-top: 0.25rem;margin-right:0.25rem;">Ir al inmueble</a>
                                     <a target="_blank" href="${estate.url_source}" style="display: inline-block;padding: 0.4rem 0.75rem;border-radius: 0.25rem;background: #000;color: #fff;margin-top: 0.25rem;">Original</a>
                                 </div>
                             `);
-                        markers.push(marker);
+                            markers.push(marker);
+                        }
                     }
                 })
             }

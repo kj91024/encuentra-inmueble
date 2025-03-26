@@ -23,11 +23,13 @@ export class EstateRecordRepositoryImp extends Repository implements EstateRecor
                 data.id_currency,
                 data.id_data_source,
                 data.description,
+
                 data.floors,
                 data.bathrooms,
                 data.rooms,
                 data.price,
                 data.area,
+
                 data.extracted_at ?? new Date()
             ]);
             return BigInt(res.rows[0].id_estate_record);

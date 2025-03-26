@@ -39,14 +39,12 @@ export class PortalScraperApi {
         }
     };
 
-
     private portalScraperProcessSchema = {
         schema: {
             body: {
                 type: 'object',
-                required: ['id_data_source', 'id_portal_scraper'],
+                required: ['id_data_source'],
                 properties: {
-                    id_portal_scraper: { type: 'number' },
                     id_data_source: { type: 'number' }
                 }
             }

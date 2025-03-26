@@ -1,7 +1,7 @@
 import { DataSourceUseCase } from "@application/usecases/DataSourceUseCase";
 import { CreateDataSource } from "@domain/model/data_source/CreateDataSource";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import {DataSourceMapper} from "@domain/mappers/DataSourceMapper.ts";
+import { DataSourceMapper } from "@domain/mappers/DataSourceMapper.ts";
 
 export class DataSourceApi {
     dataSourceUseCase: DataSourceUseCase;

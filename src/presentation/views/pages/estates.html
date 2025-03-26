@@ -220,8 +220,8 @@
 
                         <a v-for="estate in estates" :href="`/estate/${estate.id}`" class="grid basis-3/12 border bg-white rounded-lg overflow-hidden">
                             <div class="relative">
-                                <div :href="estate.data_source.url_base" class="flex absolute p-1 rounded bg-white gap-2 top-3 left-3 items-center">
-                                    <div><img :src="estate.data_source.thumbnail.url" class="rounded"></div>
+                                <div class="flex absolute p-1 pl-2 pr-2 rounded bg-white gap-2 top-3 left-3 items-center">
+                                    <div><img :src="estate.data_source.thumbnail.url" class="rounded" height="20px" width="20px"></div>
                                     <div>{{ estate.data_source.name }}</div>
                                 </div>
 
@@ -230,7 +230,7 @@
                             <div class="grid bg-white p-4 gap-3">
                                 <div>
                                     <div>{{ estate.info.property.name }}</div>
-                                    <h1 class="text-xl font-semibold mt-1 mb-1">{{ estate.info.currency.symbol }} {{ estate.info.price.toLocaleString('en-US') }} {{ estate.info.currency.iso }}</h1>
+                                    <h1 class="text-xl font-semibold mt-1 mb-1">{{ estate.info.currency.symbol }} {{ estate.info.price?.toLocaleString('en-US') }} {{ estate.info.currency.iso }}</h1>
                                     <div>{{ estate.info.operation.name }}</div>
                                     <p class="text-sm pt-1 pb-1 itallic"><i>{{ estate.gps.address }}</i></p>
                                 </div>
@@ -323,7 +323,7 @@
 
                     row.propiedad = estate.info.property.name;
                     row.operacion = estate.info.operation.name;
-                    row.precio = `${estate.info.currency.symbol} ${estate.info.price.toLocaleString('en-US')} ${estate.info.currency.iso}`;
+                    row.precio = `${estate.info.currency.symbol} ${estate.info.price?.toLocaleString('en-US')} ${estate.info.currency.iso}`;
                     row.descripcion = estate.info.description;
                     row.area = estate.info.area;
                     row.banos = estate.info.bathrooms;
